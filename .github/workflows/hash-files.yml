@@ -45,7 +45,6 @@ jobs:
           else
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
-
       
       - name: Generate new item files
         if: steps.file_check.outputs.changed == 'true'
