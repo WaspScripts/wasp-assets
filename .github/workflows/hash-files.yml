@@ -7,6 +7,7 @@ on:
 
 jobs:
   hash-files:
+    if: ${{ github.repository_owner == 'WaspScripts' }}
     runs-on: windows-latest
     steps:          
       - name: Fetch Simba 2 download URL
