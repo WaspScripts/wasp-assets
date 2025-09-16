@@ -36,10 +36,25 @@ jobs:
           path: ./wasp-data
           fetch-depth: 2
           
+      - name: Check if item files changed
+        id: file_check
+        shell: bash
+        working-directory: ./wasp-data
+        run: |
+          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q '^finders/items/data/item.txt$'; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate new gear.json
+        if: steps.file_check.outputs.changed == 'true'
+        shell: bash
+        run: ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/update_gear.simba
+          
       - name: Create hash files
         shell: bash
-        run: |
-          ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/hash-files.simba
+        run: ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/hash-files.simba
 
       - name: Commit hash files
         shell: bash
@@ -47,7 +62,7 @@ jobs:
           cd ./wasp-data
           git config --global user.name "Wasp Bot"
           git config --global user.email "waspbot@waspcripts.com"
-          if [[ -n "$(git status --porcelain finders/items/data/hash.txt jsons/gear.json '*.hash')" ]]; then
+          if [[ -n "$(git status --porcelain jsons/gear.json '*.hash')" ]]; then
             git add finders/items/data/hash.txt
             git add jsons/gear.json
             git add '*.hash'
