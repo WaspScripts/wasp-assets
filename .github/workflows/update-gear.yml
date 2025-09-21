@@ -59,7 +59,6 @@ jobs:
           fetch-depth: 2
           
       - name: Generate new gear.json
-        if: steps.file_check.outputs.changed == 'true'
         shell: bash
         run: ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/update_gear.simba
           
