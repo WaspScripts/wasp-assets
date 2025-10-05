@@ -6,7 +6,7 @@ var
   hash: String;
   json: TJSONParser;
 begin
-  path := path.Before('tools' + PATH_SEP + '..' + PATH_SEP);
+  path := PathNormalize(path);
   WriteLn path;
 
   files := DirList(path, True);
