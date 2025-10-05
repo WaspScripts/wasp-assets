@@ -7,6 +7,8 @@ var
   json: TJSONParser;
 begin
   path := path.Before('tools' + PATH_SEP + '..' + PATH_SEP);
+  WriteLn path;
+
   files := DirList(path, True);
   skip := [path + 'LICENSE', path + 'README.md', path + 'hashes.json'];
 
@@ -18,7 +20,7 @@ begin
   begin
     if PathIsDirectory(files[i]) then
       Continue;
-    if files[i].StartsWith(PATH + '.git') then
+    if files[i].StartsWith(path + '.git') then
       Continue;
     if files[i].EndsWith('.simba') then
       Continue;
