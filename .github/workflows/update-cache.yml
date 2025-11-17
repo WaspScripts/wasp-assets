@@ -26,9 +26,9 @@ jobs:
               run: |
                   cd runelite
                   mvn clean package -DskipTests
-            - run: mkdir staging && cp runelite/runelite-client/target/client-*.jar staging
+            - run: mkdir staging && cp runelite/runelite-client/target/client-*-shaded.jar staging
             - uses: actions/upload-artifact@v4
               with:
-                  name: RuneLite-Build
-                  path: staging
-            - run: java -jar staging/client-*-SNAPSHOT.jar --cache
+                name: RuneLite-Build
+                path: staging
+            - run: java -jar staging/client-*-shaded.jar --cache
