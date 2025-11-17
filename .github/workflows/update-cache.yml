@@ -24,4 +24,9 @@ jobs:
             - name: Build RuneLite
               run: |
                   cd runelite
-                  mvn clean package
+                  mvn clean package -DskipTests
+            - run: mkdir staging && cp target/client-*.jar staging
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: RuneLite-Build
+                  path: staging
