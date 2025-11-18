@@ -18,6 +18,15 @@ jobs:
           repository: 'Pauwelz/runelite'
           ref: 'master'
           path: ./runelite
+      - name: Checkout Torwent/RuneLite repository
+        uses: actions/checkout@v5
+        with:
+            repository: 'Torwent/runelite'
+            ref: 'main'
+            path: ./torwent-runelite
+      - name: Copy Simba*Dumper.java
+        run: |
+            cp torwent-runelite/cache/src/main/java/net/runelite/cache/Simba*.java runelite/cache/src/main/java/net/runelite/cache/
       - name: Setup Java 11
         uses: actions/setup-java@v4
         with:
