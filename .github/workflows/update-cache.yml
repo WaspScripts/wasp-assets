@@ -2,6 +2,10 @@ name: Update Dumps
 
 on:
   workflow_dispatch:
+    inputs:
+      cache_version:
+        description: 'OpenRS2 cache version to process'
+        required: true
   push:
     paths:
       - 'cache_version'
@@ -52,36 +56,31 @@ jobs:
 
   fetch-openrs2:
     runs-on: ubuntu-latest
-    outputs:
-      cache_version: ${{ steps.read-version.outputs.VERSION }}
     steps:
       - name: Checkout Wasp Data repository
         uses: actions/checkout@v5
-      - name: Read cache version
-        id: read-version
-        run: echo "VERSION=$(cat cache_version)" >> $GITHUB_OUTPUT
       - name: Restore/OpenRS2 cache
         uses: actions/cache@v4
         id: openrs2-cache
         with:
           path: openrs2/cache.zip
-          key: openrs2-cache-${{ steps.read-version.outputs.VERSION }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Download OpenRS2 (miss)
         if: steps.openrs2-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p openrs2
-          curl -L -o openrs2/cache.zip https://archive.openrs2.org/caches/runescape/${{ steps.read-version.outputs.VERSION }}/disk.zip
+          curl -L -o openrs2/cache.zip https://archive.openrs2.org/caches/runescape/${{ inputs.cache_version }}/disk.zip
       - name: Extract OpenRS2
         run: |
-          mkdir -p openrs2/cache/input/${{ steps.read-version.outputs.VERSION }}
-          unzip -o openrs2/cache.zip -d openrs2/cache/input/${{ steps.read-version.outputs.VERSION }}
-          curl -L -o openrs2/keys.json https://archive.openrs2.org/caches/runescape/${{ steps.read-version.outputs.VERSION }}/keys.json
-          mv openrs2/keys.json openrs2/cache/input/${{ steps.read-version.outputs.VERSION }}/${{ steps.read-version.outputs.VERSION }}.json
+          mkdir -p openrs2/cache/input/${{ inputs.cache_version }}
+          unzip -o openrs2/cache.zip -d openrs2/cache/input/${{ inputs.cache_version }}
+          curl -L -o openrs2/keys.json https://archive.openrs2.org/caches/runescape/${{ inputs.cache_version }}/keys.json
+          mv openrs2/keys.json openrs2/cache/input/${{ inputs.cache_version }}/${{ inputs.cache_version }}.json
       - name: Upload OpenRS2 artifact
         uses: actions/upload-artifact@v4
         with:
-          name: openrs2-${{ steps.read-version.outputs.VERSION }}
-          path: openrs2/cache/input/${{ steps.read-version.outputs.VERSION }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: openrs2/cache/input/${{ inputs.cache_version }}
 
   dump-items:
     runs-on: ubuntu-latest
@@ -100,20 +99,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaItemDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaItemDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Items
         uses: actions/upload-artifact@v4
         with:
-          name: items-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}/items
+          name: items-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}/items
 
   dump-collisionmap:
     runs-on: ubuntu-latest
@@ -132,20 +131,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaCollisionMapDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaCollisionMapDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Collision Maps
         uses: actions/upload-artifact@v4
         with:
-          name: collision-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: collision-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}
 
           
   dump-heightmap:
@@ -165,20 +164,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaHeightMapDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaHeightMapDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Height Maps
         uses: actions/upload-artifact@v4
         with:
-          name: heightmap-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}/heightmap
+          name: heightmap-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}/heightmap
 
   dump-itemsprites:
     runs-on: ubuntu-latest
@@ -197,20 +196,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaItemSpritesDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaItemSpritesDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Item Sprites
         uses: actions/upload-artifact@v4
         with:
-          name: itemsprites-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: itemsprites-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}
 
   dump-mapimage:
     runs-on: ubuntu-latest
@@ -229,20 +228,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaMapImageDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaMapImageDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Map Images
         uses: actions/upload-artifact@v4
         with:
-          name: map-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: map-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}
 
   dump-npcs:
     runs-on: ubuntu-latest
@@ -261,20 +260,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaNPCDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaNPCDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload NPCs
         uses: actions/upload-artifact@v4
         with:
-          name: npcs-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}/NPCs
+          name: npcs-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}/NPCs
 
   dump-objectinfo:
     runs-on: ubuntu-latest
@@ -293,20 +292,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaObjectInfoDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaObjectInfoDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Object Info
         uses: actions/upload-artifact@v4
         with:
-          name: objects-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: objects-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}
 
   dump-sprites:
     runs-on: ubuntu-latest
@@ -325,20 +324,20 @@ jobs:
       - name: Download OpenRS2 artifact
         uses: actions/download-artifact@v4
         with:
-          name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: openrs2-${{ inputs.cache_version }}
+          path: cache/input/${{ inputs.cache_version }}
       - name: Show artifact contents
         run: ls -la staging
       - name: Run SimbaSpriteDumper (java)
         run: |
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaSpriteDumper \
-            --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output
+            --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
       - name: Upload Object Info
         uses: actions/upload-artifact@v4
         with:
-          name: sprites-${{ needs.fetch-openrs2.outputs.cache_version }}
-          path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+          name: sprites-${{ inputs.cache_version }}
+          path: cache/output/${{ inputs.cache_version }}
           
 #   dump-cache:
 #     runs-on: ubuntu-latest
@@ -357,17 +356,17 @@ jobs:
 #       - name: Download OpenRS2 artifact
 #         uses: actions/download-artifact@v4
 #         with:
-#           name: openrs2-${{ needs.fetch-openrs2.outputs.cache_version }}
-#           path: cache/input/${{ needs.fetch-openrs2.outputs.cache_version }}
+#           name: openrs2-${{ inputs.cache_version }}
+#           path: cache/input/${{ inputs.cache_version }}
 #       - name: Show artifact contents
 #         run: ls -la staging
 #       - name: Run SimbaCacheDumper (java)
 #         run: |
 #           mkdir -p cache/output
 #           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaCacheDumper \
-#             --cachedir cache/input --cachename ${{ needs.fetch-openrs2.outputs.cache_version }} --outputdir cache/output || echo "SimbaCacheDumper finished"
+#             --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output || echo "SimbaCacheDumper finished"
 #       - name: Upload Items
 #         uses: actions/upload-artifact@v4
 #         with:
-#           name: cache-${{ needs.fetch-openrs2.outputs.cache_version }}
-#           path: cache/output/${{ needs.fetch-openrs2.outputs.cache_version }}
+#           name: cache-${{ inputs.cache_version }}
+#           path: cache/output/${{ inputs.cache_version }}
