@@ -113,7 +113,7 @@ jobs:
       - name: Zip item definitions
         run: |
             cd cache/output/${{ inputs.cache_version }}
-            zip -r item-definitions.zip items
+            zip -r item-definitions.zip items/*
       - name: Upload Items
         uses: actions/upload-artifact@v4
         with:
@@ -182,7 +182,7 @@ jobs:
       - name: Zip item definitions
         run: |
             cd cache/output/${{ inputs.cache_version }}
-            zip -r heightmap.zip heightmap
+            zip -r heightmap.zip heightmap/heightmap/*
       - name: Upload Height Maps
         uses: actions/upload-artifact@v4
         with:
