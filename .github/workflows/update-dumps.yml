@@ -357,13 +357,13 @@ jobs:
           path: artifacts
       - name: Organize dump outputs
         run: |
-          cp artifacts-items-${{ inputs.cache_version }}/item-definitions.zip jsons/item-definitions.zip 2>/dev/null || true
+          cp artifacts/items-${{ inputs.cache_version }}/item-definitions.zip jsons/item-definitions.zip 2>/dev/null || true
       - name: Create branch and commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b update-${{ inputs.cache_version }}
-          git add data/${{ inputs.cache_version }}
+          git add -a
           git commit -m "Add cache dumps for OpenRS2 version ${{ inputs.cache_version }}" || echo "No changes to commit"
           git push origin update-${{ inputs.cache_version }}
       # - name: Create Pull Request
