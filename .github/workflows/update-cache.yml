@@ -55,6 +55,9 @@ jobs:
             - name: Run SimbaItemDumper
               run: |
                 mkdir -p cache/output
-                mvn -q -pl cache -am exec:java \
+                cd runelite
+                # Invoke exec plugin directly with coordinates so we don't depend on plugin config in the POM
+                mvn -q -pl cache -am org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
                     -Dexec.mainClass=net.runelite.cache.SimbaItemDumper \
+                    -Dexec.classpathScope=runtime \
                     -Dexec.args="--cachedir ../cache/input --cachename cache --outputdir ../cache/output"
