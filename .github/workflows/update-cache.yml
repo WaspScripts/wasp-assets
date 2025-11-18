@@ -33,7 +33,6 @@ jobs:
             - name: Copy SimbaItemDumper.java
               run: |
                   cp tools/dumpers/SimbaItemDumper.java runelite/cache/src/main/java/net/runelite/cache/SimbaItemDumper.java
-                  ls -la runelite/cache/src/main/java/net/runelite/cache
             - name: Build RuneLite
               run: |
                   cd runelite/cache
@@ -65,7 +64,7 @@ jobs:
                 mkdir -p cache/output
                 cd runelite/cache
                 # Use Maven exec from cache module - full build ensures all dependencies are available
-                mvn -q -pl cache org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
+                mvn -q org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
                   -Dexec.mainClass=net.runelite.cache.SimbaItemDumper \
                   -Dexec.classpathScope=compile \
                   -Dexec.args="--cachedir ../cache/input --cachename 2349 --outputdir ../cache/output"
