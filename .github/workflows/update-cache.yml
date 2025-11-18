@@ -74,7 +74,7 @@ jobs:
                 mkdir -p cache/output
                 cd runelite
                 # Use Maven exec from cache module - full build ensures all dependencies are available
-                mvn -pl cache org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
+                mvn -q -pl cache org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
                   -Dexec.mainClass=net.runelite.cache.SimbaItemDumper \
                   -Dexec.classpathScope=compile \
                   -Dexec.args="--cachedir ../cache/input --cachename 2349 --outputdir ../cache/output"
