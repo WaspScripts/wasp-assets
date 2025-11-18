@@ -36,13 +36,12 @@ jobs:
                   ls -la runelite/cache/src/main/java/net/runelite/cache
             - name: Build RuneLite
               run: |
-                  cd runelite
+                  cd runelite/cache
                   mvn clean package -DskipTests
             - name: Copy built client jar
               run: |
                   mkdir staging
                   cp runelite/cache/target/*.jar staging
-                  cp runelite/runelite-client/target/*.jar staging
             - uses: actions/upload-artifact@v4
               with:
                 name: RuneLite-Build
@@ -56,4 +55,6 @@ jobs:
             - name: Run SimbaItemDumper
               run: |
                 mkdir -p cache/output
-                java -cp "runelite/cache/target/classes:staging/cache-*.jar" net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
+                mvn -q -pl cache -am exec:java \
+                    -Dexec.mainClass=net.runelite.cache.SimbaItemDumper \
+                    -Dexec.args="--cachedir ../cache/input --cachename cache --outputdir ../cache/output"
