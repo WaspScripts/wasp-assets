@@ -64,13 +64,13 @@ jobs:
                   curl -L -o cache.zip https://archive.openrs2.org/caches/runescape/${{ steps.cache-version.outputs.VERSION }}/disk.zip
                   unzip -o cache.zip -d cache/input/${{ steps.cache-version.outputs.VERSION }}
                   curl -L -o keys.json https://archive.openrs2.org/caches/runescape/${{ steps.cache-version.outputs.VERSION }}/keys.json
-                  mv keys.json cache/input/${{ steps.cache-version.outputs.VERSION }}/keys.json
+                  mv keys.json cache/input/${{ steps.cache-version.outputs.VERSION }}/${{ steps.cache-version.outputs.VERSION }}.json
             - name: Extract cached zip if needed
               if: steps.cache-openrs2.outputs.cache-hit == 'true'
               run: |
                   mkdir -p cache/input
                   unzip -o cache.zip -d cache/input/${{ steps.cache-version.outputs.VERSION }}
-                  mv keys.json cache/input/${{ steps.cache-version.outputs.VERSION }}/keys.json
+                  mv keys.json cache/input/${{ steps.cache-version.outputs.VERSION }}/${{ steps.cache-version.outputs.VERSION }}.json
             - name: Run SimbaItemDumper
               run: |
                 mkdir -p cache/output
