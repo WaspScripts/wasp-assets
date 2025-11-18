@@ -40,8 +40,8 @@ jobs:
             - name: Copy built client jar
               run: |
                   mkdir staging
-                  cp runelite/cache/target/*-shaded.jar staging
-                  cp runelite/runelite-client/target/*-shaded.jar staging
+                  cp runelite/cache/target/*.jar staging
+                  cp runelite/runelite-client/target/*.jar staging
             # - uses: actions/upload-artifact@v4
             #   with:
             #     name: RuneLite-Build
@@ -55,4 +55,4 @@ jobs:
             - name: Run SimbaItemDumper
               run: |
                 mkdir -p cache/output
-                java -cp staging/runelite-*.shaded.jar -cp staging/cache-*-shaded.jar -cp cache net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
+                java -cp staging/runelite-*.shaded.jar -cp staging/cache-*.jar -cp cache net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
