@@ -34,26 +34,26 @@ jobs:
               run: |
                   cp tools/dumpers/SimbaItemDumper.java runelite/cache/src/main/java/net/runelite/cache/SimbaItemDumper.java
                   ls -la runelite/cache/src/main/java/net/runelite/cache
-            # - name: Build RuneLite
-            #   run: |
-            #       cd runelite
-            #       mvn clean package -DskipTests
-            # - name: Copy built client jar
-            #   run: |
-            #       mkdir staging
-            #       cp runelite/cache/target/*.jar staging
-            #       cp runelite/runelite-client/target/*.jar staging
-            # - uses: actions/upload-artifact@v4
-            #   with:
-            #     name: RuneLite-Build
-            #     path: staging
-            # - name: OpenRS2 Cache download
-            #   run : |
-            #       mkdir -p cache/input
-            #       curl -L -o cache.zip https://archive.openrs2.org/caches/runescape/2349/disk.zip
-            #       unzip -o cache.zip -d cache/input
-            #       curl -L -o cache/input/keys.json https://archive.openrs2.org/caches/runescape/2349/keys.json           
-            # - name: Run SimbaItemDumper
-            #   run: |
-            #     mkdir -p cache/output
-            #     java -cp "staging/client-*-shaded.jar:staging/cache-*.jar" net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
+            - name: Build RuneLite
+              run: |
+                  cd runelite
+                  mvn clean package -DskipTests
+            - name: Copy built client jar
+              run: |
+                  mkdir staging
+                  cp runelite/cache/target/*.jar staging
+                  cp runelite/runelite-client/target/*.jar staging
+            - uses: actions/upload-artifact@v4
+              with:
+                name: RuneLite-Build
+                path: staging
+            - name: OpenRS2 Cache download
+              run : |
+                  mkdir -p cache/input
+                  curl -L -o cache.zip https://archive.openrs2.org/caches/runescape/2349/disk.zip
+                  unzip -o cache.zip -d cache/input
+                  curl -L -o cache/input/keys.json https://archive.openrs2.org/caches/runescape/2349/keys.json           
+            - name: Run SimbaItemDumper
+              run: |
+                mkdir -p cache/output
+                java -cp "runelite/cache/target/classes" net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
