@@ -56,4 +56,4 @@ jobs:
             - name: Run SimbaItemDumper
               run: |
                 mkdir -p cache/output
-                java -cp "runelite/cache/target/classes" net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
+                java -cp "runelite/cache/target/classes:staging/cache-*.jar" net.runelite.cache.SimbaItemDumper -cachedir cache/input -cachename cache -outputdir cache/output
