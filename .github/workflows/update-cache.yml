@@ -15,8 +15,8 @@ jobs:
       - name: Checkout RuneLite repository
         uses: actions/checkout@v5
         with:
-          repository: 'Torwent/runelite'
-          ref: 'main'
+          repository: 'Pauwelz/runelite'
+          ref: 'master'
           path: ./runelite
       - name: Setup Java 11
         uses: actions/setup-java@v4
