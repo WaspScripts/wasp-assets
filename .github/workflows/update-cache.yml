@@ -67,7 +67,7 @@ jobs:
                 mvn -q org.codehaus.mojo:exec-maven-plugin:3.1.0:java \
                   -Dexec.mainClass=net.runelite.cache.SimbaItemDumper \
                   -Dexec.classpathScope=compile \
-                  -Dexec.args="--cachedir ../cache/input --cachename 2349 --outputdir ../cache/output"
+                  -Dexec.args="--cachedir ../../cache/input --cachename 2349 --outputdir ../../cache/output"
             - uses: actions/upload-artifact@v4
               with:
                 name: Items
