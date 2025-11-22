@@ -104,8 +104,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaItemDumper (java)
         run: |
           mkdir -p cache/output
@@ -140,8 +138,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaCollisionMapDumper (java)
         run: |
           mkdir -p cache/output
@@ -173,8 +169,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaHeightMapDumper (java)
         run: |
           mkdir -p cache/output
@@ -209,8 +203,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaItemSpritesDumper (java)
         run: |
           mkdir -p cache/output
@@ -241,8 +233,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaMapImageDumper (java)
         run: |
           mkdir -p cache/output
@@ -273,8 +263,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaNPCDumper (java)
         run: |
           mkdir -p cache/output
@@ -309,8 +297,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaObjectInfoDumper (java)
         run: |
           mkdir -p cache/output
@@ -341,8 +327,6 @@ jobs:
         with:
           name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
-      - name: Show artifact contents
-        run: ls -la staging
       - name: Run SimbaSpriteDumper (java)
         run: |
           mkdir -p cache/output
@@ -393,7 +377,7 @@ jobs:
           Expand-Archive -Path simba.zip -DestinationPath simba -Force
       - name: Run Simba to extract additional assets
         run: |
-          $exe = Get-ChildItem simba -Filter "Simba-1400.exe" | Select-Object -First 1
+          $exe = Get-ChildItem . -Filter "Simba-1400*.exe" | Select-Object -First 1
           & $exe.FullName --run tools/hash-files.simba
           & $exe.FullName --run tools/update_gear.simba
           & $exe.FullName --run tools/update_items.simba
