@@ -355,6 +355,7 @@ jobs:
 
   commit-results:
     runs-on: ubuntu-latest
+    container: kasmweb/alpine-320-desktop:1.18.0
     needs: [dump-items, dump-collisionmap, dump-heightmap, dump-itemsprites, dump-mapimage, dump-npcs, dump-objectinfo, dump-sprites]
     steps:
       - name: Checkout repository
