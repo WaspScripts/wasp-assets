@@ -380,7 +380,7 @@ jobs:
           $simbaZipUrl = (Invoke-WebRequest -Uri $latestUrlFile -UseBasicParsing).Content.Trim()
           Invoke-WebRequest -Uri $simbaZipUrl -OutFile simba.zip
           Invoke-WebRequest -Uri https://github.com/Villavu/Simba/releases/download/simba1400-release/Simba-Win64.exe -OutFile Simba-1400.exe
-          Expand-Archive -Path simba.zip -Force
+          Expand-Archive -Path simba.zip -Force -DestinationPath .
       - name: Run Simba to extract additional assets
         run: |
           $exe = Get-ChildItem . -Filter "Simba-Win64*.exe" | Select-Object -First 1
