@@ -378,7 +378,6 @@ jobs:
           curl -L -o simba.zip "$SIMBA_URL"
           unzip simba.zip
           chmod +x Simba-Linux64
-          sudo apt-get install gtk2.0 libgtk2.0-dev
       - name: Run Simba to extract additional assets
         run: |
           ./Simba-Linux64 --run tools/update_npcs.simba
