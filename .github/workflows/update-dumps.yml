@@ -91,7 +91,7 @@ jobs:
         run: |
           $cacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
           New-Item -ItemType Directory -Force -Path $cacheDir | Out-Null
-          Copy-Item -Recurse -Force "openrs2/cache/*" $cacheDir
+          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $cacheDir
       - name: Run RuneLite (java)
         run: |
           $jar = Get-ChildItem staging -Filter "*-shaded.jar" | Select-Object -First 1
