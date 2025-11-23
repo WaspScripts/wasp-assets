@@ -373,7 +373,7 @@ jobs:
 
   commit-results:
     runs-on: windows-latest
-    needs: [dump-items, dump-collisionmap, dump-heightmap, dump-itemsprites, dump-mapimage, dump-npcs, dump-objectinfo, dump-sprites]
+    needs: [dump-items, dump-collisionmap, dump-heightmap, dump-itemsprites, dump-mapimage, dump-npcs, dump-objectinfo, dump-sprites, dump-itemfinder]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -386,6 +386,9 @@ jobs:
           New-Item -ItemType Directory -Force -Path jsons | Out-Null
           New-Item -ItemType Directory -Force -Path map | Out-Null
           $moves = @(
+            @{Source="artifacts/itemfinder/items-imgs.zip"; Dest="finders/items/items-imgs.zip"},
+            @{Source="artifacts/itemfinder/id.txt"; Dest="finders/items/data/id.txt"},
+            @{Source="artifacts/itemfinder/item.txt"; Dest="finders/items/data/item.txt"},
             @{Source="artifacts/items/items.zip"; Dest="jsons/item-definitions.zip"},
             @{Source="artifacts/collision/collision.zip"; Dest="map/collision.zip"},
             @{Source="artifacts/heightmap/heightmap.zip"; Dest="map/heightmap.zip"},
