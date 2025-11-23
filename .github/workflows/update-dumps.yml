@@ -94,7 +94,27 @@ jobs:
         run: |
           $jar = Get-ChildItem staging -Filter "*-shaded.jar" | Select-Object -First 1
           if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
-          java -jar $jar.FullName
+          $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
+          $timeout = 120
+          $elapsed = 0
+          while (-not $process.HasExited -and $elapsed -lt $timeout) {
+            Start-Sleep -Seconds 5
+            $elapsed += 5
+            if (Test-Path "output.log") {
+              $content = Get-Content "output.log" -Raw
+              if ($content -match "ItemFinder completed") {
+                Write-Host "ItemFinder completed detected, stopping process"
+                Stop-Process -Id $process.Id -Force
+                break
+              }
+            }
+          }
+          if ($elapsed -ge $timeout) {
+            Write-Host "Timeout reached, stopping process"
+            Stop-Process -Id $process.Id -Force
+          }
+          Get-Content "output.log" -ErrorAction SilentlyContinue
+          Get-Content "error.log" -ErrorAction SilentlyContinue
 
   dump-items:
     runs-on: ubuntu-latest
