@@ -92,7 +92,9 @@ jobs:
           path: staging
       - name: Run RuneLite (java)
         run: |
-          java -jar staging/*-shaded.jar
+          $jar = Get-ChildItem staging -Filter "*-shaded.jar" | Select-Object -First 1
+          if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
+          java -jar $jar.FullName
 
   dump-items:
     runs-on: ubuntu-latest
