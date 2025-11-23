@@ -159,7 +159,8 @@ jobs:
       - name: Zip item definitions
         run: |
             cd cache/output/${{ inputs.cache_version }}
-            zip -r heightmap.zip heightmap/* -x heightmap/heightmap/*
+            rm -r heightmap/heightmap
+            zip -r heightmap.zip heightmap/*
       - name: Upload Height Maps
         uses: actions/upload-artifact@v4
         with:
