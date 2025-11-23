@@ -391,30 +391,30 @@ jobs:
           mv artifacts/objects/objects.zip map/objects.zip
           mv artifacts/collision/collision.zip map/collision.zip
           mv artifacts/heightmap/heightmap.zip map/heightmap.zip
-      - name: Create branch and commit
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b update-${{ inputs.cache_version }}
-          git add -u
-          git commit -m "Add cache dumps for OpenRS2 version ${{ inputs.cache_version }}" || echo "No changes to commit"
-          git push origin update-${{ inputs.cache_version }} --force
-      - name: Check if PR exists
-        id: check
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          prs=$(gh pr list \
-              --repo "$GITHUB_REPOSITORY" \
-              --head 'update-${{ inputs.cache_version }}' \
-              --base 'main' \
-              --json title \
-              --jq 'length')
-          if ((prs > 0)); then
-              echo "skip=true" >> "$GITHUB_OUTPUT"
-          fi
+          rm -r artifacts/
+      # - name: Create branch and commit
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     git checkout -b update-${{ inputs.cache_version }}
+      #     git add -u
+      #     git commit -m "Add cache dumps for OpenRS2 version ${{ inputs.cache_version }}" || echo "No changes to commit"
+      #     git push origin update-${{ inputs.cache_version }} --force
+      # - name: Check if PR exists
+      #   id: check
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     prs=$(gh pr list \
+      #         --repo "$GITHUB_REPOSITORY" \
+      #         --head 'update-${{ inputs.cache_version }}' \
+      #         --base 'main' \
+      #         --json title \
+      #         --jq 'length')
+      #     if ((prs > 0)); then
+      #         echo "skip=true" >> "$GITHUB_OUTPUT"
+      #     fi
       - name: Create Pull Request
-        if: '!steps.check.outputs.skip'
         uses: peter-evans/create-pull-request@v7
         with:
           branch: update-${{ inputs.cache_version }}
