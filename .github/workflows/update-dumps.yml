@@ -93,12 +93,12 @@ jobs:
             --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
           ls -lah cache/output/${{ inputs.cache_version }}
           cd cache/output/${{ inputs.cache_version }}/items
-          zip -r cache/output/${{ inputs.cache_version }}/items.zip ./*.json
+          zip -r items.zip ./*.json
       - name: Upload Items
         uses: actions/upload-artifact@v4
         with:
           name: items
-          path: cache/output/${{ inputs.cache_version }}/items.zip
+          path: cache/output/${{ inputs.cache_version }}/items/items.zip
 
   dump-collisionmap:
     runs-on: ubuntu-latest
