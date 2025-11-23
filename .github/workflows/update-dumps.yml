@@ -78,7 +78,7 @@ jobs:
 
   dump-itemfinder:
     runs-on: windows-latest
-    needs: [build-runelite]
+    needs: [build-runelite, fetch-openrs2]
     steps:
       - name: Setup Java 11
         uses: actions/setup-java@v4
@@ -87,79 +87,34 @@ jobs:
           java-version: '11'
       - name: Download RuneLite artifacts
         uses: actions/download-artifact@v4
-        with:
-          name: runelite-jars
-          path: staging
+      - name: Copy cache to $HOME\jagexcache
+        run: |
+          $cacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $cacheDir | Out-Null
+          Copy-Item -Recurse -Force "openrs2/cache/*" $cacheDir
       - name: Run RuneLite (java)
         run: |
           $jar = Get-ChildItem staging -Filter "*-shaded.jar" | Select-Object -First 1
           if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
           $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
-          $timeout = 120
+          $timeout = 300
           $elapsed = 0
           while (-not $process.HasExited -and $elapsed -lt $timeout) {
             Start-Sleep -Seconds 5
             $elapsed += 5
+            if (Test-Path "output.log") {
+              $content = Get-Content "output.log" -Raw
+              if ($content -match "ItemFinder completed") {
+                Write-Host "ItemFinder completed detected, stopping process"
+                Stop-Process -Id $process.Id -Force
+                break
+              }
+            }
           }
           if ($elapsed -ge $timeout) {
             Write-Host "Timeout reached, stopping process"
-
-            $File = "itemfinder/screenshot1.png"
-            Add-Type -AssemblyName System.Windows.Forms
-            Add-type -AssemblyName System.Drawing
-            # Gather Screen resolution information
-            $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
-            $Width = $Screen.Width
-            $Height = $Screen.Height
-            $Left = $Screen.Left
-            $Top = $Screen.Top
-            # Create bitmap using the top-left and bottom-right bounds
-            $bitmap = New-Object System.Drawing.Bitmap $Width, $Height
-            # Create Graphics object
-            $graphic = [System.Drawing.Graphics]::FromImage($bitmap)
-            # Capture screen
-            $graphic.CopyFromScreen($Left, $Top, 0, 0, $bitmap.Size)
-            # Save to file
-            $bitmap.Save($File) 
-            Write-Output "Screenshot saved to:"
-            Write-Output $File
-
             Stop-Process -Id $process.Id -Force
           }
-
-          $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
-          $timeout = 120
-          $elapsed = 0
-          while (-not $process.HasExited -and $elapsed -lt $timeout) {
-            Start-Sleep -Seconds 5
-            $elapsed += 5
-          }
-          if ($elapsed -ge $timeout) {
-            Write-Host "Timeout reached, stopping process"
-
-            $File = "itemfinder/screenshot2.png"
-            Add-Type -AssemblyName System.Windows.Forms
-            Add-type -AssemblyName System.Drawing
-            # Gather Screen resolution information
-            $Screen = [System.Windows.Forms.SystemInformation]::VirtualScreen
-            $Width = $Screen.Width
-            $Height = $Screen.Height
-            $Left = $Screen.Left
-            $Top = $Screen.Top
-            # Create bitmap using the top-left and bottom-right bounds
-            $bitmap = New-Object System.Drawing.Bitmap $Width, $Height
-            # Create Graphics object
-            $graphic = [System.Drawing.Graphics]::FromImage($bitmap)
-            # Capture screen
-            $graphic.CopyFromScreen($Left, $Top, 0, 0, $bitmap.Size)
-            # Save to file
-            $bitmap.Save($File) 
-            Write-Output "Screenshot saved to:"
-            Write-Output $File
-
-            Stop-Process -Id $process.Id -Force
-          }
-
           Get-Content "output.log" -ErrorAction SilentlyContinue
           Get-Content "error.log" -ErrorAction SilentlyContinue
       - name: Upload ItemFinder
