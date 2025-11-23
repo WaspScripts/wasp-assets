@@ -91,15 +91,11 @@ jobs:
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaItemDumper \
             --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
-      - name: Zip item definitions
-        run: |
-            cd cache/output/${{ inputs.cache_version }}
-            zip -r item-definitions.zip items/*
       - name: Upload Items
         uses: actions/upload-artifact@v4
         with:
           name: items
-          path: cache/output/${{ inputs.cache_version }}/item-definitions.zip
+          path: cache/output/${{ inputs.cache_version }}/items
 
   dump-collisionmap:
     runs-on: ubuntu-latest
@@ -250,15 +246,11 @@ jobs:
           mkdir -p cache/output
           java -cp staging/cache-*-SNAPSHOT-jar-with-dependencies.jar net.runelite.cache.SimbaNPCDumper \
             --cachedir cache/input --cachename ${{ inputs.cache_version }} --outputdir cache/output
-      - name: Zip NPCs
-        run: |
-            cd cache/output/${{ inputs.cache_version }}
-            zip -r npcs.zip NPCs
       - name: Upload NPCs
         uses: actions/upload-artifact@v4
         with:
           name: npcs
-          path: cache/output/${{ inputs.cache_version }}/npcs.zip
+          path: cache/output/${{ inputs.cache_version }}/NPCs
 
   dump-objectinfo:
     runs-on: ubuntu-latest
@@ -339,7 +331,6 @@ jobs:
             @{Source="artifacts/collision/collision.zip"; Dest="map/collision.zip"},
             @{Source="artifacts/heightmap/heightmap.zip"; Dest="map/heightmap.zip"},
             @{Source="artifacts/npcs/npcs.zip"; Dest="map/npcs_helper.zip"},
-            @{Source="artifacts/npcs/npcs.zip"; Dest="tools/npcs_helper.zip"},
             @{Source="artifacts/map/map.zip"; Dest="map/map.zip"}
           )
           foreach ($m in $moves) {
