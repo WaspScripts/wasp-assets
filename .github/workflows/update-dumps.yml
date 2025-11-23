@@ -393,7 +393,7 @@ jobs:
             @{Source="artifacts/map/map.zip"; Dest="map/map.zip"},
             @{Source="artifacts/objects/objects.zip"; Dest="map/objects.zip"},
             @{Source="artifacts/collision/collision.zip"; Dest="map/collision.zip"},
-            @{Source="artifacts/heightmap/heightmap.zip"; Dest="map/heightmap.zip"},
+            @{Source="artifacts/heightmap/heightmap.zip"; Dest="map/heightmap.zip"}
           )
           foreach ($m in $moves) {
             if (Test-Path $m.Source) {
