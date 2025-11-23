@@ -100,14 +100,6 @@ jobs:
           while (-not $process.HasExited -and $elapsed -lt $timeout) {
             Start-Sleep -Seconds 5
             $elapsed += 5
-            if (Test-Path "output.log") {
-              $content = Get-Content "output.log" -Raw
-              if ($content -match "ItemFinder completed") {
-                Write-Host "ItemFinder completed detected, stopping process"
-                Stop-Process -Id $process.Id -Force
-                break
-              }
-            }
           }
           if ($elapsed -ge $timeout) {
             Write-Host "Timeout reached, stopping process"
