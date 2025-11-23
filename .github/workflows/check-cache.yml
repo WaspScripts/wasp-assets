@@ -29,4 +29,4 @@ jobs:
       needs: fetch-and-dispatch
       uses: ./.github/workflows/update-dumps.yml
       with:
-        cache_id: ${{ needs.fetch-and-dispatch.outputs.cache_id }}
+        cache_version: ${{ needs.fetch-and-dispatch.outputs.cache_id }}
