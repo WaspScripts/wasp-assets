@@ -80,6 +80,8 @@ jobs:
     runs-on: windows-latest
     needs: [build-runelite, fetch-openrs2]
     steps:
+      - name: Checkout RuneLite repository
+        uses: actions/checkout@v5
       - name: Setup Java 11
         uses: actions/setup-java@v4
         with:
@@ -87,11 +89,22 @@ jobs:
           java-version: '11'
       - name: Download RuneLite artifacts
         uses: actions/download-artifact@v4
-      - name: Copy cache to $HOME\jagexcache
+      - name: Copy cache
         run: |
-          $cacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
-          New-Item -ItemType Directory -Force -Path $cacheDir | Out-Null
-          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $cacheDir
+          $jagexCacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $jagexCacheDir | Out-Null
+          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $jagexCacheDir
+          $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
+          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $runeliteCacheDir
+      - name: Copy preferences.dat
+        run: |
+          $jagexCacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $jagexCacheDir | Out-Null
+          Copy-Item -Recurse -Force "tools/preferences/*.dat" $jagexCacheDir
+          $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
+          Copy-Item -Recurse -Force "tools/preferences/*.dat" $runeliteCacheDir
       - name: Run RuneLite (java)
         run: |
           $jar = Get-ChildItem runelite-jars -Filter "*-shaded.jar" | Select-Object -First 1
