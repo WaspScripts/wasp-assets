@@ -11,9 +11,9 @@ jobs:
         permissions:
             actions: write
             contents: read
+        outputs:
+            cache_id: ${{ steps.fetch.outputs.cache_id }}
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v5
             - name: Fetch latest cache id
               id: fetch
               run: |
@@ -25,7 +25,8 @@ jobs:
                         exit 1
                     fi
                     echo "cache_id=$id" >> "$GITHUB_OUTPUT"
-            - name: Call update-dumps.yml workflow
-              uses: ./.github/workflows/update-dumps.yml
-              with:
-                  cache_id: ${{ steps.fetch.outputs.cache_id }}
+    call-workflow:
+      needs: fetch-and-dispatch
+      uses: ./.github/workflows/update-dumps.yml
+      with:
+        cache_id: ${{ needs.fetch-and-dispatch.outputs.cache_id }}
