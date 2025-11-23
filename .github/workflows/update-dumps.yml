@@ -371,7 +371,7 @@ jobs:
           path: cache/output/${{ inputs.cache_version }}
 
   commit-results:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: [dump-items, dump-collisionmap, dump-heightmap, dump-mapimage, dump-npcs, dump-objectinfo, dump-sprites, dump-itemfinder]
     steps:
       - name: Checkout repository
@@ -382,27 +382,15 @@ jobs:
           path: artifacts
       - name: Organize dump outputs
         run: |
-          New-Item -ItemType Directory -Force -Path jsons | Out-Null
-          New-Item -ItemType Directory -Force -Path map | Out-Null
-          $moves = @(
-            @{Source="artifacts/itemfinder/items-imgs.zip"; Dest="finders/items/items-imgs.zip"},
-            @{Source="artifacts/itemfinder/id.txt"; Dest="finders/items/data/id.txt"},
-            @{Source="artifacts/itemfinder/item.txt"; Dest="finders/items/data/item.txt"},
-            @{Source="artifacts/items/items.zip"; Dest="jsons/item-definitions.zip"},
-            @{Source="artifacts/npcs/npcs.zip"; Dest="map/npcs_helper.zip"},
-            @{Source="artifacts/map/map.zip"; Dest="map/map.zip"},
-            @{Source="artifacts/objects/objects.zip"; Dest="map/objects.zip"},
-            @{Source="artifacts/collision/collision.zip"; Dest="map/collision.zip"},
-            @{Source="artifacts/heightmap/heightmap.zip"; Dest="map/heightmap.zip"}
-          )
-          foreach ($m in $moves) {
-            if (Test-Path $m.Source) {
-              Write-Host "Moving $($m.Source) -> $($m.Dest)"
-              Copy-Item -Force $m.Source $m.Dest
-            } else {
-              Write-Host "Source not found (skipping): $($m.Source)"
-            }
-          }
+          mv artifacts/itemfinder/items-imgs.zip finders/items/items-imgs.zip
+          mv artifacts/itemfinder/id.txt finders/items/data/id.txt
+          mv artifacts/itemfinder/item.txt finders/items/data/item.txt
+          mv artifacts/items/items.zip jsons/item-definitions.zip
+          mv artifacts/npcs/npcs.zip map/npcs_helper.zip
+          mv artifacts/map/map.zip map/map.zip
+          mv artifacts/objects/objects.zip map/objects.zip
+          mv artifacts/collision/collision.zip map/collision.zip
+          mv artifacts/heightmap/heightmap.zip map/heightmap.zip
       - name: Create branch and commit
         run: |
           git config user.name "github-actions[bot]"
