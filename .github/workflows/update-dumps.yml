@@ -115,6 +115,11 @@ jobs:
           }
           Get-Content "output.log" -ErrorAction SilentlyContinue
           Get-Content "error.log" -ErrorAction SilentlyContinue
+      - name: Upload ItemFinder
+        uses: actions/upload-artifact@v4
+        with:
+          name: itemfinder
+          path: itemfinder
 
   dump-items:
     runs-on: ubuntu-latest
