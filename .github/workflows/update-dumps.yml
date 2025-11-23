@@ -155,7 +155,7 @@ jobs:
       - name: Zip item definitions
         run: |
             cd cache/output/${{ inputs.cache_version }}
-            ls -lah
+            ls -lah heightmap/
       - name: Upload Height Maps
         uses: actions/upload-artifact@v4
         with:
