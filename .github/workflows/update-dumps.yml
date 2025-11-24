@@ -109,7 +109,7 @@ jobs:
         run: |
           $jar = Get-ChildItem runelite-jars -Filter "*-shaded.jar" | Select-Object -First 1
           if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
-          $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
+          $process = Start-Process -FilePath "java" -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
           $timeout = 300
           $elapsed = 0
           while (-not $process.HasExited -and $elapsed -lt $timeout) {
@@ -130,10 +130,6 @@ jobs:
           }
           Get-Content "output.log" -ErrorAction SilentlyContinue
           Get-Content "error.log" -ErrorAction SilentlyContinue
-      - name: Convert item.txt from Windows-1250 to UTF-8
-        run: |
-          Get-Content -Path itemfinder/item.txt | Set-Content -Encoding UTF8 itemfinder/item-utf8.txt
-          Move-Item -Force itemfinder/item-utf8.txt itemfinder/item.txt
       - name: Upload ItemFinder
         uses: actions/upload-artifact@v4
         with:
