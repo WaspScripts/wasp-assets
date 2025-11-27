@@ -5,6 +5,7 @@ on:
     workflows: ["Update Hashes"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   check-items:
@@ -21,7 +22,11 @@ jobs:
       - name: Check if item files changed
         id: file_check
         run: |
-          if git diff --name-only ${{ github.event.workflow_run.head_sha }}^ ${{ github.event.workflow_run.head_sha }} | grep -q '^finders/items/data/item.txt$'; then
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manual run detected."
+            echo "changed=true" >> $GITHUB_OUTPUT
+          elif git diff --name-only ${{ github.event.workflow_run.head_sha }}^ ${{ github.event.workflow_run.head_sha }} \
+              | grep -Eq '^(finders/items/data/item.txt|finders/items/data/id.txt|finders/items/items-imgs.zip)$'; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT

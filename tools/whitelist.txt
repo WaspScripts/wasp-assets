@@ -1,3 +1,4 @@
+hashes.json
 finders/house_layout.zip
 finders/items/data/hash.txt
 finders/items/data/id.txt
