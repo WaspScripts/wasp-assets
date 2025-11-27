@@ -101,7 +101,7 @@ jobs:
           enableCrossOsArchive: true
           fail-on-cache-miss: true
       - name: Copy cache
-        run: Move-Item -Recurse -Force "cache/input/${{ inputs.cache_version }}/*" $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
+        run: Move-Item "cache/input/${{ inputs.cache_version }}/*" $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
       - name: Copy preferences.dat
         run: |
           $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
