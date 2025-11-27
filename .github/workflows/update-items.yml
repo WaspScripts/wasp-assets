@@ -14,7 +14,7 @@ jobs:
       changed: ${{ steps.file_check.outputs.changed }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -53,7 +53,7 @@ jobs:
           Remove-Item -Path $outputFile -Force
 
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           path: ./wasp-data
           fetch-depth: 2
@@ -75,59 +75,6 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git add -A
             git commit -m "Automatic items files update"
-            git push
-          else
-            echo "No changes to commit."
-          fi
-
-  process-gear:
-    if: ${{ github.repository_owner == 'WaspScripts' && needs.check-items.outputs.changed == 'true' }}
-    needs: process-items
-    runs-on: windows-latest
-    steps:
-      - name: Fetch Simba 2 download URL
-        id: simba-url
-        run: |
-          $url = "https://raw.githubusercontent.com/Villavu/Simba-Build-Archive/refs/heads/main/latest.win64"
-          $response = Invoke-WebRequest -Uri $url -UseBasicParsing
-          $baseUrl = $response.Content.Trim() -replace 'Win64\.zip\?raw=true$', ''
-          Write-Output "Base URL: $baseUrl"
-          echo "::set-output name=baseUrl::$baseUrl"
-          New-Item -Path ".\Includes" -ItemType Directory
-
-      - name: Download Simba 2.0 (64-bit)
-        run: |
-          $baseUrl = "${{ steps.simba-url.outputs.baseUrl }}"
-          $downloadUrl = "$baseUrl" + "Win64.zip?raw=true"
-          Write-Output "Download URL (64-bit): $downloadUrl"
-          $outputFile = ".\download.zip"
-          Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile
-          Expand-Archive -Path $outputFile -DestinationPath . -Force
-          Remove-Item -Path $outputFile -Force
-
-      - name: Checkout repository
-        uses: actions/checkout@v4.2.2
-        with:
-          path: ./wasp-data
-          fetch-depth: 2
-
-      - name: Generate new gear.json
-        shell: bash
-        run: ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/update_gear.simba
-
-      - name: Create hash files
-        shell: bash
-        run: ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/hash-files.simba
-
-      - name: Commit hash files
-        shell: bash
-        run: |
-          cd ./wasp-data
-          git config --global user.name "Wasp Bot"
-          git config --global user.email "waspbot@waspcripts.com"
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git add -A
-            git commit -m "Automatic gear files update"
             git push
           else
             echo "No changes to commit."

@@ -96,7 +96,6 @@ var
   itemData: TItemData;
   writer: TResourceWriter;
 begin
-
   for itemData in ITEM_DATA_ARRAY do
     FileAppend(PATH + 'data' + PATH_SEP + 'hash.txt', itemData.ItemHash + LINE_SEP);
 
