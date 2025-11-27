@@ -31,7 +31,7 @@ jobs:
           Remove-Item -Path $outputFile -Force
 
       - name: Checkout repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v5
         with:
           path: ./wasp-data
           fetch-depth: 2
@@ -63,18 +63,14 @@ jobs:
         shell: bash
         run: |
           cd ./wasp-data
-          find . -type f \
-            ! -path "*/.git/*" \
-            ! -path "./.git/*" \
-            ! -path "./.github/*" \
-            ! -name ".gitignore" \
-            ! -name ".gitattributes" \
-            ! -name "LICENSE" \
-            ! -name "README.md" \
-            ! -name "*.simba" \
-            ! -name "preferences.dat" \
-            ! -name "preferences2.dat" \
-          | while read file; do
+          while IFS= read -r file; do
+            # Skip empty lines
+            [ -z "$file" ] && continue
+            # Make sure the file exists
+            if [ ! -f "$file" ]; then
+              echo "File not found: $file"
+              continue
+            fi
             remote_path="${file#./}"
             mime_type=$(file --mime-type -b "$file")
             echo "→ Uploading $remote_path ($mime_type)"
@@ -83,7 +79,7 @@ jobs:
               -H "Content-Type: $mime_type" \
               --data-binary @"$file"
             echo ""
-          done
+          done < ./tools/whitelist.txt
 
   notification:
     if: ${{ github.repository_owner == 'WaspScripts' && github.ref == 'refs/heads/main' }}
