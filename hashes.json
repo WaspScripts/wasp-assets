@@ -28,5 +28,7 @@
   "map\\map.zip" : "52E4A07B",
   "map\\npcs.zip" : "6C6B1FE2",
   "map\\npcs_helper.zip" : "B2D4F5EE",
-  "map\\objects.zip" : "85FEE5AA"
+  "map\\objects.zip" : "85FEE5AA",
+  "tools\\preferences\\preferences.dat" : "E848042E",
+  "tools\\preferences\\preferences2.dat" : "329C0448"
 }
