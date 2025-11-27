@@ -74,74 +74,8 @@ jobs:
     outputs:
       cache-key: openrs2-cache-${{ inputs.cache_version }}-
 
-  # dump-itemfinder:
-  #   runs-on: windows-latest
-  #   needs: [build-runelite, fetch-openrs2]
-  #   steps:
-  #     - name: Checkout RuneLite repository
-  #       uses: actions/checkout@v5
-  #     - name: Setup Java 11
-  #       uses: actions/setup-java@v4
-  #       with:
-  #         distribution: 'temurin'
-  #         java-version: '11'
-  #     - name: Download RuneLite artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: runelite-jars
-  #         path: runelite-jars
-  #     # - name: Restore OpenRS2 cache
-  #     #   uses: actions/cache/restore@v4
-  #     #   with:
-  #     #     path: cache/input/${{ inputs.cache_version }}
-  #     #     key: openrs2-cache-${{ inputs.cache_version }}-
-  #     #     enableCrossOsArchive: true
-  #     #     fail-on-cache-miss: true
-  #     # - name: Copy cache
-  #     #   run: Move-Item "cache/input/${{ inputs.cache_version }}/*" $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
-  #     - name: Copy preferences.dat
-  #       run: |
-  #         $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
-  #         New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
-  #         Copy-Item -Recurse -Force "tools/preferences/*.dat" $runeliteCacheDir
-  #     - name: Run RuneLite (java)
-  #       run: |
-  #         $jar = Get-ChildItem runelite-jars -Filter "*-shaded.jar" | Select-Object -First 1
-  #         if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
-  #         $process = Start-Process -FilePath "java" -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
-  #         $timeout = 300
-  #         $elapsed = 0
-  #         while ($elapsed -lt $timeout) {
-  #           Start-Sleep -Seconds 5
-  #           $elapsed += 5
-  #         }
-  #         if ($elapsed -ge $timeout) {
-  #           Write-Host "Timeout reached, stopping process"
-  #           Stop-Process -Id $process.Id -Force
-  #         }
-  #         Get-Content "output.log" -ErrorAction SilentlyContinue
-  #         Get-Content "error.log" -ErrorAction SilentlyContinue
-  #         $process = Start-Process -FilePath "java" -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
-  #         while (-not $process.HasExited) {
-  #           if (Test-Path "output.log") {
-  #             $content = Get-Content "output.log" -Raw
-  #             if ($content -match "ItemFinder completed") {
-  #               Write-Host "ItemFinder completed detected, stopping process"
-  #               Stop-Process -Id $process.Id -Force
-  #               break
-  #             }
-  #           }
-  #         }
-  #         Get-Content "output.log" -ErrorAction SilentlyContinue
-  #         Get-Content "error.log" -ErrorAction SilentlyContinue
-  #     - name: Upload ItemFinder
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: itemfinder
-  #         path: itemfinder
-
-  dump-itemfinder-linux:
-    runs-on: ubuntu-latest
+  dump-itemfinder:
+    runs-on: windows-latest
     needs: [build-runelite, fetch-openrs2]
     steps:
       - name: Checkout RuneLite repository
@@ -156,55 +90,54 @@ jobs:
         with:
           name: runelite-jars
           path: runelite-jars
-      - name: Restore OpenRS2 cache
-        uses: actions/cache/restore@v4
-        with:
-          path: cache/input/${{ inputs.cache_version }}
-          key: openrs2-cache-${{ inputs.cache_version }}-
-          enableCrossOsArchive: true
-          fail-on-cache-miss: true
-      - name: Copy cache
+      # - name: Restore OpenRS2 cache
+      #   uses: actions/cache/restore@v4
+      #   with:
+      #     path: cache/input/${{ inputs.cache_version }}
+      #     key: openrs2-cache-${{ inputs.cache_version }}-
+      #     enableCrossOsArchive: true
+      #     fail-on-cache-miss: true
+      # - name: Copy cache
+      #   run: Move-Item "cache/input/${{ inputs.cache_version }}/*" $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
+      - name: Copy preferences.dat
         run: |
-          RUNELITE_CACHE_DIR="$HOME/.runelite/jagexcache/oldschool/LIVE"
-          mkdir -p "$RUNELITE_CACHE_DIR"
-          mv cache/input/${{ inputs.cache_version }}/* "$RUNELITE_CACHE_DIR" || true
-      - name: Copy preferences.dat (Linux)
+          $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
+          New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
+          Copy-Item -Recurse -Force "tools/preferences/*.dat" $runeliteCacheDir
+      - name: Run RuneLite (java)
         run: |
-          RUNELITE_CACHE_DIR="$HOME/.runelite/jagexcache/oldschool/LIVE"
-          mkdir -p "$RUNELITE_CACHE_DIR"
-          mv tools/preferences/*.dat "$RUNELITE_CACHE_DIR" || true
-      - name: Run RuneLite (java) on Linux
-        run: |
-          set -eo pipefail
-          JAR=$(ls -1 runelite-jars/*-shaded.jar | head -n 1)
-          if [ -z "$JAR" ]; then echo "Shaded jar not found"; exit 1; fi
-          # Start RuneLite in background, capture logs
-          rm -f output.log error.log || true
-          nohup java -Dfile.encoding=UTF8 -jar "$JAR" > output.log 2> error.log &
-          PID=$! || PID=0
-          if [ "$PID" -eq 0 ]; then echo "Failed to start background process"; exit 1; fi
-          TIMEOUT=300
-          ELAPSED=0
-          while kill -0 "$PID" 2>/dev/null; do
-            if grep -q "ItemFinder completed" output.log 2>/dev/null; then
-              echo "ItemFinder completed detected, stopping process";
-              kill "$PID" || true
-              break
-            fi
-            sleep 5
-            ELAPSED=$((ELAPSED+5))
-            if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
-              echo "Timeout reached, stopping process";
-              kill "$PID" || true
-              break
-            fi
-          done
-          cat output.log || true
-          cat error.log || true
+          $jar = Get-ChildItem runelite-jars -Filter "*-shaded.jar" | Select-Object -First 1
+          if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
+          $process = Start-Process -FilePath "java" -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
+          while (-not $process.HasExited) {
+            if (Test-Path "output.log") {
+              $content = Get-Content "output.log" -Raw
+              if ($content -match "WARNING: An illegal reflective access operation has occurred") {
+                Write-Host "Startup completed, stopping process"
+                Stop-Process -Id $process.Id -Force
+                break
+              }
+            }
+          }
+          Get-Content "output.log" -ErrorAction SilentlyContinue
+          Get-Content "error.log" -ErrorAction SilentlyContinue
+          $process = Start-Process -FilePath "java" -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName -NoNewWindow -PassThru -RedirectStandardOutput "output.log" -RedirectStandardError "error.log"
+          while (-not $process.HasExited) {
+            if (Test-Path "output.log") {
+              $content = Get-Content "output.log" -Raw
+              if ($content -match "ItemFinder completed") {
+                Write-Host "ItemFinder completed detected, stopping process"
+                Stop-Process -Id $process.Id -Force
+                break
+              }
+            }
+          }
+          Get-Content "output.log" -ErrorAction SilentlyContinue
+          Get-Content "error.log" -ErrorAction SilentlyContinue
       - name: Upload ItemFinder
         uses: actions/upload-artifact@v4
         with:
-          name: itemfinder-linux
+          name: itemfinder
           path: itemfinder
 
   # dump-items:
