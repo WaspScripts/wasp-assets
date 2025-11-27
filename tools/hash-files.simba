@@ -1,6 +1,5 @@
 var
   path: String = {$macro DIR} + '..' + PATH_SEP;
-  skip: TStringArray;
   files: TStringArray;
   i: Integer;
   hash: String;
@@ -9,8 +8,7 @@ begin
   path := PathNormalize(path);
   WriteLn path;
 
-  files := DirList(path, True);
-  skip := [path + 'LICENSE', path + 'README.md', path + 'hashes.json'];
+  files := FileReadLines(path + 'tools' + PATH_SEP + 'whitelist.txt');
 
   FileDelete(path + 'hashes.json');
 
@@ -18,18 +16,9 @@ begin
 
   for i := 0 to High(files) do
   begin
-    if PathIsDirectory(files[i]) then
-      Continue;
-    if files[i].StartsWith(path + '.git') then
-      Continue;
-    if files[i].EndsWith('.simba') then
-      Continue;
-    if SKIP.Contains(files[i]) then
-      Continue;
-
-    hash := HashFile(EHashAlgo.CRC32, files[i]);
+    hash := HashFile(EHashAlgo.CRC32, path + files[i]);
     WriteLn('File: ', files[i], ' Hash: ', hash);
-    json.AddString(files[i].After(path), hash);
+    json.AddString(files[i], hash);
   end;
 
   WriteLn json.Format();
