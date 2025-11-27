@@ -175,13 +175,14 @@ jobs:
           mv tools/preferences/*.dat "$RUNELITE_CACHE_DIR" || true
       - name: Run RuneLite (java) on Linux
         run: |
-          set -euo pipefail
+          set -eo pipefail
           JAR=$(ls -1 runelite-jars/*-shaded.jar | head -n 1)
           if [ -z "$JAR" ]; then echo "Shaded jar not found"; exit 1; fi
           # Start RuneLite in background, capture logs
           rm -f output.log error.log || true
-          (java -Dfile.encoding=UTF8 -jar "$JAR" > output.log 2> error.log &) 
-          PID=$!
+          nohup java -Dfile.encoding=UTF8 -jar "$JAR" > output.log 2> error.log &
+          PID=$! || PID=0
+          if [ "$PID" -eq 0 ]; then echo "Failed to start background process"; exit 1; fi
           TIMEOUT=300
           ELAPSED=0
           while kill -0 "$PID" 2>/dev/null; do
