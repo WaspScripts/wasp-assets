@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore/OpenRS2 cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         id: openrs2-cache
         with:
           path: openrs2/cache/input
@@ -69,11 +69,16 @@ jobs:
       - name: Fetch latest OpenRS2 keys.json
         run: |
           curl -L -o openrs2/cache/input/${{ inputs.cache_version }}/${{ inputs.cache_version }}.json https://archive.openrs2.org/caches/runescape/${{ inputs.cache_version }}/keys.json
-      - name: Upload OpenRS2 artifact
-        uses: actions/upload-artifact@v4
+      - name: Save OpenRS2 cache
+        uses: actions/cache/save@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
-          path: openrs2/cache/input/${{ inputs.cache_version }}
+          path: openrs2/cache/input
+          key: openrs2-cache-${{ inputs.cache_version }}
+      # - name: Upload OpenRS2 artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: openrs2-${{ inputs.cache_version }}
+      #     path: openrs2/cache/input/${{ inputs.cache_version }}
 
   dump-itemfinder:
     runs-on: windows-latest
@@ -90,7 +95,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: C:\Users\runneradmin\.runelite\jagexcache\oldschool\LIVE
-          key: openrs2-${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Copy cache
         run: |
           Get-ChildItem $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
@@ -144,11 +149,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaItemDumper (java)
         run: |
           mkdir -p cache/output
@@ -176,11 +181,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaItemDumper (java)
         run: |
           mkdir -p cache/output
@@ -206,11 +211,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaCollisionMapDumper (java)
         run: |
           mkdir -p cache/output
@@ -236,11 +241,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaHeightMapDumper (java)
         run: |
           mkdir -p cache/output
@@ -266,11 +271,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaMapImageDumper (java)
         run: |
           mkdir -p cache/output
@@ -296,11 +301,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaNPCDumper (java)
         run: |
           mkdir -p cache/output
@@ -330,11 +335,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaObjectInfoDumper (java)
         run: |
           mkdir -p cache/output
@@ -360,11 +365,11 @@ jobs:
         with:
           name: runelite-jars
           path: staging
-      - name: Download OpenRS2 artifact
-        uses: actions/download-artifact@v4
+      - name: Restore OpenRS2 cache
+        uses: actions/cache/restore@v4
         with:
-          name: openrs2-${{ inputs.cache_version }}
           path: cache/input/${{ inputs.cache_version }}
+          key: openrs2-cache-${{ inputs.cache_version }}
       - name: Run SimbaSpriteDumper (java)
         run: |
           mkdir -p cache/output
