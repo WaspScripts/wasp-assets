@@ -87,20 +87,14 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
       - name: Download RuneLite artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
+        with:
+          path: ${{ env.USERPROFILE }}\.runelite\jagexcache\oldschool\LIVE
       - name: Copy cache
         run: |
-          $jagexCacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
-          New-Item -ItemType Directory -Force -Path $jagexCacheDir | Out-Null
-          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $jagexCacheDir
-          $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
-          New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
-          Copy-Item -Recurse -Force "openrs2-${{ inputs.cache_version }}/cache/*" $runeliteCacheDir
+          Get-ChildItem $env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE
       - name: Copy preferences.dat
         run: |
-          $jagexCacheDir = "$env:USERPROFILE\jagexcache\oldschool\LIVE"
-          New-Item -ItemType Directory -Force -Path $jagexCacheDir | Out-Null
-          Copy-Item -Recurse -Force "tools/preferences/*.dat" $jagexCacheDir
           $runeliteCacheDir = "$env:USERPROFILE\.runelite\jagexcache\oldschool\LIVE"
           New-Item -ItemType Directory -Force -Path $runeliteCacheDir | Out-Null
           Copy-Item -Recurse -Force "tools/preferences/*.dat" $runeliteCacheDir
