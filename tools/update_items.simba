@@ -26,8 +26,9 @@ begin
     DirDelete(PATH + 'masks', False);
   end;
 
-  FileDelete(PATH + 'data' + PATH_SEP + 'hash.txt');
-  FileDelete(PATH + 'masks.zip');
+  if FileExists(PATH + 'data' + PATH_SEP + 'hash.txt') then
+    if not FileDelete(PATH + 'data' + PATH_SEP + 'hash.txt') then
+      raise 'Couldn''t delete ' + PATH + 'data' + PATH_SEP + 'hash.txt';
 
   files := DirList(PATH + 'items-imgs', True);
   if files = [] then
@@ -54,9 +55,10 @@ var
   tpa: TPointArray;
 begin
   if SINGLE_ITEM <> '' then
-    if not filename.Contains(SINGLE_ITEM + '.png') then Exit;
+    if not filename.EndsWith(SINGLE_ITEM + '.png') then Exit;
 
   img := new TImage(filename);
+
   img.FillWithAlpha($FF);        //ensure there's no weird alphas.
   img.ReplaceColor($202030, $0); //remove the item shadow
 
@@ -99,14 +101,21 @@ begin
   for itemData in ITEM_DATA_ARRAY do
     FileAppend(PATH + 'data' + PATH_SEP + 'hash.txt', itemData.ItemHash + LINE_SEP);
 
-  FileDelete(PATH + 'items.bin');
+  if FileExists(PATH + 'items.bin') then
+    if not FileDelete(PATH + 'items.bin') then
+      raise 'Couldn''t delete ' + PATH + 'items.bin';
+
   writer := new TResourceWriter();
   writer.AddImages(PATH + 'items-imgs', '*.png', False);
   writer.AddImages(PATH + 'masks', '*.bmp', False);
   writer.Save(PATH + 'items.bin');
 
-  FileDelete(PATH + 'items.zip');
-  ZipFiles(PATH + 'items.zip', [PATH + 'items.bin']);
+  if FileExists(PATH + 'items.zip') then
+    if not FileDelete(PATH + 'items.zip') then
+      raise 'Couldn''t delete ' + PATH + 'items.zip';
+
+  if not ZipFiles(PATH + 'items.zip', [PATH + 'items.bin']) then
+    raise 'Couldn''t zip ' + PATH + 'items.bin';
 
   if RESET then
   begin
