@@ -9445,8 +9445,11 @@ brine rat
 armour shard
 artefact
 axe head
+artefact
 helmet fragment
+artefact
 shield fragment
+artefact
 sword fragment
 mace
 goblin village sphere
