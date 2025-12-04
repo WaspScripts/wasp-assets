@@ -404,6 +404,7 @@ jobs:
             ["artifacts/objects/objects.zip"]="map/objects.zip"
             ["artifacts/collision/collision.zip"]="map/collision.zip"
             ["artifacts/heightmap/heightmap.zip"]="map/heightmap.zip"
+            ["artifacts/sprites/sprites.zip"]="sprites/sprites.zip"
           )
           for src in "${!files[@]}"; do
             dst="${files[$src]}"
