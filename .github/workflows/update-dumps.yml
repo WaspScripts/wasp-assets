@@ -416,7 +416,7 @@ jobs:
             mkdir -p "$(dirname "$dst")"
 
             if [[ "$src" == *.zip ]]; then
-              if [ ! -f "$dst" ] || ! zipcmp "$src" "$dst"; then
+              if [ ! -f "$dst" ] || ! zipcmp -q "$src" "$dst"; then
                 mv "$src" "$dst"
                 git add "$dst"
               fi
