@@ -397,6 +397,7 @@ jobs:
           path: artifacts
       - name: Organize dump outputs and stage changes
         run: |
+          sudo apt install -y zipcmp
           declare -A files=(
             ["artifacts/itemfinder/items-imgs.zip"]="finders/items/items-imgs.zip"
             ["artifacts/itemfinder/id.txt"]="finders/items/data/id.txt"
@@ -432,7 +433,7 @@ jobs:
             git checkout -b $BRANCH_NAME
             git commit -m "Update cache dumps to version ${{ inputs.cache_version }}"
 
-            git push origin $BRANCH_NAME --force-with-lease
+            git push origin $BRANCH_NAME --force
 
             echo "Changes committed and pushed to $BRANCH_NAME."
             echo "changed=true" >> $GITHUB_OUTPUT
