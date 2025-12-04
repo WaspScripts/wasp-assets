@@ -2936,6 +2936,7 @@ barrel bomb
 barrel of coal tar
 barrel of naphtha
 naphtha mix
+naphtha mix
 strip of cloth
 noted strip of cloth
 raw rabbit
@@ -2943,6 +2944,12 @@ noted raw rabbit
 cooked rabbit
 noted cooked rabbit
 big book of bangs
+symbol
+noted symbol
+symbol
+noted symbol
+symbol
+noted symbol
 symbol
 noted symbol
 bark
@@ -16298,6 +16305,7 @@ holos-arder poison
 resper-holos poison
 arder-resper poison
 blackstone fragment
+blackstone fragment
 strange icon
 icon segment
 icon segment
@@ -16308,6 +16316,10 @@ perfected shadow torch
 shadow blocker
 revitalising idol
 anima portal
+shadow key
+shadow key
+shadow key
+shadow key
 shadow key
 anima portal schematic
 revitalising idol schematic
