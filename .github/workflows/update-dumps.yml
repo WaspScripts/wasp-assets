@@ -413,7 +413,7 @@ jobs:
           for src in "${!files[@]}"; do
             dst="${files[$src]}"
             mkdir -p "$(dirname "$dst")"
-            if [ ! -f "$dst" ] || ! cmp -s "$src" "$dst"; then
+            if [ ! -f "$dst" ] || ! zipcmp -s "$src" "$dst"; then
               mv "$src" "$dst"
               git add "$dst"
             fi
