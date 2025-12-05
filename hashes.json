@@ -1,8 +1,8 @@
 {
   "finders/house_layout.zip" : "D6FF199D",
   "finders/items/data/hash.txt" : "70917E2B",
-  "finders/items/data/id.txt" : "587B767B",
-  "finders/items/data/item.txt" : "F1BD6231",
+  "finders/items/data/id.txt" : "A35A5813",
+  "finders/items/data/item.txt" : "FA52BFF0",
   "finders/items/items.zip" : "3188730F",
   "finders/overheads.zip" : "1F4D08DA",
   "finders/prayer.zip" : "0ADB50ED",
@@ -22,5 +22,5 @@
   "map/heightmap.zip" : "4C39FAA4",
   "map/map.zip" : "EA7CB608",
   "map/npcs.zip" : "6C6B1FE2",
-  "map/objects.zip" : "3333ECFA"
+  "map/objects.zip" : "2825A6DA"
 }
