@@ -39,9 +39,9 @@ jobs:
       - name: Create hash files
         shell: bash
         run: |
-          echo "Before: $(jq . hashes.json)"
+          echo "Before: $(jq . ./wasp-data/hashes.json)"
           ./Simba-Win64.exe --extractopenssl --run ./wasp-data/tools/hash-files.simba
-          echo "After: $(jq . hashes.json)"
+          echo "After: $(jq . ./wasp-data/hashes.json)"
 
       - name: Commit hashes.json
         shell: bash
