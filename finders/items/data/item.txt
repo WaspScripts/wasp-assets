@@ -7851,10 +7851,10 @@ noted black mask (1)
 black mask
 noted black mask
 witchwood icon
-bandana eyepatch
-bandana eyepatch
-bandana eyepatch
-bandana eyepatch
+bandana eyepatch (white)
+bandana eyepatch (red)
+bandana eyepatch (blue)
+bandana eyepatch (brown)
 hat eyepatch
 crabclaw hook
 pipe section
@@ -7919,10 +7919,10 @@ brown navy slacks
 black navy slacks
 purple navy slacks
 grey navy slacks
-noted bandana eyepatch
-noted bandana eyepatch
-noted bandana eyepatch
-noted bandana eyepatch
+noted bandana eyepatch (white)
+noted bandana eyepatch (red)
+noted bandana eyepatch (blue)
+noted bandana eyepatch (brown)
 noted hat eyepatch
 security book
 stronghold notes
@@ -18836,7 +18836,7 @@ dragon keel schematic
 small key (the pandemonium)
 small key (the onyx crest)
 small key (tear of the soul)
-small key (ynsdail)
+small key (ynysdail)
 small key (minotaurs' rest)
 small key (buccaneers' haven)
 small key (isle of bones)
