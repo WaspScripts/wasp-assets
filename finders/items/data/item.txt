@@ -17043,6 +17043,7 @@ large meat pouch (open)
 small fur pouch (open)
 medium fur pouch (open)
 large fur pouch (open)
+prospector legs
 brimhaven voucher
 agility xp
 graceful recolour
@@ -19310,7 +19311,6 @@ noted rosewood logs
 jar of feathers
 crate of arrowtips
 crate of clothes
-serving platter
 lovley jubbly bib
 beer belly sweater
 jad jumper
