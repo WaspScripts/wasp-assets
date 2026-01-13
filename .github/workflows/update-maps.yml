@@ -1,4 +1,4 @@
-name: Update Items
+name: Update Maps
 
 on:
   workflow_run:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-items:
+  check-maps:
     if: ${{ github.repository_owner == 'WaspScripts' }}
     runs-on: ubuntu-latest
     outputs:
@@ -32,9 +32,9 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-  process-items:
-    if: ${{ github.repository_owner == 'WaspScripts' && needs.check-items.outputs.changed == 'true' }}
-    needs: check-items
+  process-maps:
+    if: ${{ github.repository_owner == 'WaspScripts' && needs.check-maps.outputs.changed == 'true' }}
+    needs: check-maps
     runs-on: windows-latest
     steps:
       - name: Fetch Simba 2 download URL
