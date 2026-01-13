@@ -1,11 +1,11 @@
 const
-  PATH             = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP;
+  PATH             = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP + 'zips' + PATH_SEP;
   JSONS_PATH       = PATH + 'npcs' + PATH_SEP;
   DATA_URL         = 'https://raw.githubusercontent.com/mejrs/data_osrs/master/NPCList_OSRS.json';
   HELPER_CACHE     = PATH + 'npcs_helper' + PATH_SEP;
   RESET_CACHE      = False;
   CLEAN_UP_HELPERS = True;
-  CLEAN_UP_NPCS    = False;
+  CLEAN_UP_NPCS    = True;
   MAX_PLANE        = 3;
   MAX_X            = 99;
   MAX_Y            = 199;
@@ -231,7 +231,7 @@ begin
         end;
       end;
 
-  //ZipFiles(PATH + 'npcs.zip', DirList(JSONS_PATH, True));
+  ZipFiles(PATH + '..' + PATH_SEP + 'npcs.zip', DirList(JSONS_PATH, True));
 
   if CLEAN_UP_HELPERS then
     DirDelete(HELPER_CACHE, False);

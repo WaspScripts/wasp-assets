@@ -19,3 +19,5 @@ jsons/monsters
 jsons/monsters.zip
 jsons/weapons.json
 map/mapdata.zip
+map/objects.zip
+map/npcs.zip

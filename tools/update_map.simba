@@ -1,6 +1,6 @@
 const
   PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP;
-  MAP_FILES: TStringArray = ['map', 'heightmap', 'collision', 'objects', 'npcs'];
+  MAP_FILES: TStringArray = ['map', 'heightmap', 'collision'];
   UNZIP_FILES: Boolean = True;
   DELETE_FILES: Boolean = True;
 
@@ -10,20 +10,26 @@ var
 
 procedure Compress(current: String);
 var
-  writter: TResourceWriter;
+  writer: TResourceWriter;
+  filename: String;
+  files: TStringArray;
+  img: TImage;
 begin
   WriteLn('Start compressing: ', current + '.bin');
-  writter := new TResourceWriter();
+  writer := new TResourceWriter();
 
-  case MAP_FILES.IndexOf(current) of
-    0..2: Writter.AddImages(PATH + current, '*.png', True);
-    else  Writter.AddFiles(PATH + current, '*.json', True);
+  files := DirList(PATH+current, True);
+  for filename in files do
+  begin
+    if not PathIsFile(filename) then Continue;
+    img := new TImage(filename);
+    writer.AddImage(filename.After(PATH + current + PATH_SEP), img);
   end;
 
   if not DirCreate(PATH + 'bins') then
     raise 'Failed to create path: ' + PATH + 'bins';
   FileDelete(PATH + 'bins' + PATH_SEP + current + '.bin');
-  writter.Save(PATH + 'bins' + PATH_SEP + current + '.bin');
+  writer.Save(PATH + 'bins' + PATH_SEP + current + '.bin');
   WriteLn('Finished compressing: ', current + '.bin');
 end;
 
@@ -48,7 +54,7 @@ begin
 end;
 
 var
-  current, filename: String;
+  current: String;
   timer: TCountDown;
 begin
   ClearSimbaOutput();

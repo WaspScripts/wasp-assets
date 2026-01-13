@@ -26,7 +26,7 @@ jobs:
             echo "Manual run detected."
             echo "changed=true" >> $GITHUB_OUTPUT
           elif git diff --name-only ${{ github.event.workflow_run.head_sha }}^ ${{ github.event.workflow_run.head_sha }} \
-              | grep -Eq '^(map/zips/map.zip|map/zips/heightmap.zip|map/zips/collision.zip|map/zips/objects.zip|map/zips/npcs_helper.zip)$'; then
+              | grep -Eq '^(map/zips/map.zip|map/zips/heightmap.zip|map/zips/collision.zip)$'; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -63,17 +63,13 @@ jobs:
           path: ./wasp-assets
           fetch-depth: 2
 
+      - name: Unzip npc files
+        shell: bash
+        run: unzip -o ./wasp-assets/map/zips/npc_helper.zip -d ./wasp-assets/map/zips/npc_helper
+
       - name: Generate new npc files
         shell: bash
         run: ./Simba-Win64.exe --extractopenssl --run ./wasp-assets/tools/update_npcs.simba
-
-      - name: Unzip map files
-        shell: bash
-        run: |
-          unzip -o ./wasp-assets/map/zips/map.zip -d ./wasp-assets/map/map
-          unzip -o ./wasp-assets/map/zips/heightmap.zip -d ./wasp-assets/map/heightmap
-          unzip -o ./wasp-assets/map/zips/collision.zip -d ./wasp-assets/map/collision
-          unzip -o ./wasp-assets/map/zips/objects.zip -d ./wasp-assets/map/objects
 
       - name: Generate new bin files and mapdata.zip
         shell: bash
