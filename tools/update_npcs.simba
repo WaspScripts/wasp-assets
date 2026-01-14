@@ -113,10 +113,8 @@ begin
   if RESET_CACHE then
     DirDelete(HELPER_CACHE, False);
 
-  for i := 0 to MAX_PLANE do
-    if not DirCreate(JSONS_PATH + ToStr(i)) then
-      raise 'Failed to create: ' + JSONS_PATH + ToStr(i);
-
+  if not DirCreate(JSONS_PATH) then
+    raise 'Failed to create: ' + JSONS_PATH;
   if not DirCreate(HELPER_CACHE) then
     raise 'Failed to create: ' + HELPER_CACHE;
 
@@ -225,7 +223,7 @@ begin
         if chunkContent <> ('[' + LINE_SEP + ']') then
         begin
           FileWrite(
-            JSONS_PATH + ToStr(p) + PATH_SEP + ToStr(x) + '-' + ToStr(y) + '.json',
+            JSONS_PATH + ToStr(p) + '-' + ToStr(x) + '-' + ToStr(y) + '.json',
             chunkContent
           );
         end;
