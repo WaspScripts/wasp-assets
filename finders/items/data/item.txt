@@ -6716,7 +6716,6 @@ noted guthix balance(1)
 gadderhammer
 noted gadderhammer
 boxing gloves
-boxing gloves
 wooden sword
 wooden shield
 treasure stone
@@ -9148,10 +9147,6 @@ ava's attractor
 ava's accumulator
 crone-made amulet
 snowball
-snowball
-snowball
-snowball
-snowball
 gublinch shards
 reindeer hat
 wintumber tree
@@ -9536,7 +9531,6 @@ berserker necklace
 noted berserker necklace
 onyx bracelet
 noted onyx bracelet
-onyx bracelet
 regen bracelet
 noted regen bracelet
 karamja gloves 1
@@ -9883,7 +9877,6 @@ black knight helm
 address form
 scrap paper
 hair clip
-beach boxing gloves
 beach boxing gloves
 cursed goblin hammer
 cursed goblin bow
@@ -16982,10 +16975,6 @@ graceful recolour
 cursed amulet of magic
 noted cursed amulet of magic
 rainbow cape
-colourful cape
-colourful cape
-colourful cape
-colourful cape
 colourful cape
 colourful cape
 colourful cape
