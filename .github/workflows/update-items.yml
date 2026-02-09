@@ -31,9 +31,19 @@ jobs:
             exit 0
           fi
 
-          FILES="finders/items/data/item.txt finders/items/data/id.txt finders/items/items-imgs.zip"
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+          echo "Files changed in HEAD:"
+          echo "$CHANGED_FILES"
 
-          if git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq "^($(echo $FILES | sed 's/ /|/g'))$"; then
+          MATCH_FOUND=false
+          for FILE in "finders/items/data/item.txt" "finders/items/data/id.txt" "finders/items/items-imgs.zip"; do
+            if echo "$CHANGED_FILES" | grep -qx "$FILE"; then
+              MATCH_FOUND=true
+              break
+            fi
+          done
+
+          if [ "$MATCH_FOUND" = true ]; then
             echo "Changes detected in items files."
             echo "changed=true" >> $GITHUB_OUTPUT
           else

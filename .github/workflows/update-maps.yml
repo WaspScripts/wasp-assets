@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if item files changed
+      - name: Check if map files changed
         id: file_check
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -31,9 +31,19 @@ jobs:
             exit 0
           fi
 
-          FILES="map/zips/map.zip map/zips/heightmap.zip map/zips/collision.zip"
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r HEAD)
+          echo "Files changed in HEAD:"
+          echo "$CHANGED_FILES"
 
-          if git diff-tree --no-commit-id --name-only -r HEAD | grep -Eq "^($(echo $FILES | sed 's/ /|/g'))$"; then
+          MATCH_FOUND=false
+          for FILE in "map/zips/map.zip" "map/zips/heightmap.zip" "map/zips/collision.zip"; do
+            if echo "$CHANGED_FILES" | grep -qx "$FILE"; then
+              MATCH_FOUND=true
+              break
+            fi
+          done
+
+          if [ "$MATCH_FOUND" = true ]; then
             echo "Changes detected in map files."
             echo "changed=true" >> $GITHUB_OUTPUT
           else
@@ -100,7 +110,7 @@ jobs:
           git config --global user.email "waspbot@waspscripts.com"
           if [[ -n "$(git status --porcelain)" ]]; then
             git add -A
-            git commit -m "Automatic items files update"
+            git commit -m "Automatic map files update"
             git push
           else
             echo "No changes to commit."
