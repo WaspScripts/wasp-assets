@@ -2428,7 +2428,6 @@ red dragon leather
 noted red dragon leather
 black dragon leather
 noted black dragon leather
-logs
 buchu seed
 dragon chainbody
 rotten tomato
@@ -2457,6 +2456,9 @@ bronze fire arrow
 bronze fire arrow
 bronze fire arrow
 bronze fire arrow
+bronze fire arrow (lit)
+bronze fire arrow (lit)
+bronze fire arrow (lit)
 bronze fire arrow (lit)
 ring of recoil
 noted ring of recoil
@@ -4390,10 +4392,16 @@ jangerberry seed
 whiteberry seed
 poison ivy seed
 yew seed
+yew seed
+yew seed
+yew seed
 acorn
 acorn
 acorn
 acorn
+willow seed
+willow seed
+willow seed
 willow seed
 maple seed
 maple seed
@@ -4411,9 +4419,25 @@ marigold seed
 marigold seed
 marigold seed
 marigold seed
+rosemary seed
+rosemary seed
+rosemary seed
+rosemary seed
+sweetcorn seed
+sweetcorn seed
+sweetcorn seed
 sweetcorn seed
 watermelon seed
+watermelon seed
+watermelon seed
+watermelon seed
 strawberry seed
+strawberry seed
+strawberry seed
+strawberry seed
+tomato seed
+tomato seed
+tomato seed
 tomato seed
 cabbage seed
 cabbage seed
@@ -4423,6 +4447,9 @@ onion seed
 onion seed
 onion seed
 onion seed
+potato seed
+potato seed
+potato seed
 potato seed
 barley seed
 barley seed
@@ -4457,6 +4484,30 @@ nasturtium seed
 nasturtium seed
 nasturtium seed
 nasturtium seed
+woad seed
+woad seed
+woad seed
+woad seed
+redberry seed
+redberry seed
+redberry seed
+redberry seed
+cadavaberry seed
+cadavaberry seed
+cadavaberry seed
+cadavaberry seed
+dwellberry seed
+dwellberry seed
+dwellberry seed
+dwellberry seed
+jangerberry seed
+jangerberry seed
+jangerberry seed
+jangerberry seed
+whiteberry seed
+whiteberry seed
+whiteberry seed
+whiteberry seed
 guam seed
 guam seed
 guam seed
@@ -4477,6 +4528,9 @@ curry tree seed
 curry tree seed
 curry tree seed
 curry tree seed
+pineapple seed
+pineapple seed
+pineapple seed
 pineapple seed
 papaya tree seed
 papaya tree seed
@@ -4506,6 +4560,10 @@ belladonna seed
 belladonna seed
 belladonna seed
 belladonna seed
+woad leaf
+woad leaf
+woad leaf
+woad leaf
 cactus seed
 belladonna seed
 mushroom spore
@@ -4513,6 +4571,7 @@ apple tree seed
 banana tree seed
 orange tree seed
 curry tree seed
+pineapple seed
 papaya tree seed
 palm tree seed
 calquat tree seed
@@ -4525,10 +4584,17 @@ yanillian seed
 krandorian seed
 wildblood seed
 acorn
+willow seed
 maple seed
+yew seed
 magic seed
 spirit seed
+potato seed
 onion seed
+sweetcorn seed
+watermelon seed
+tomato seed
+strawberry seed
 cabbage seed
 gardening trowel
 noted gardening trowel
@@ -4716,10 +4782,14 @@ strange book
 book of folklore
 small pouch
 medium pouch
+medium pouch
 large pouch
+large pouch
+giant pouch
 giant pouch
 elemental talisman
 noted elemental talisman
+scrying orb
 scrying orb
 abyssal book
 binding necklace
@@ -4764,7 +4834,14 @@ flash powder
 stethoscope
 mystic jewel
 gear
+gear
+gear
+gear
+gear
+gear
 tile
+tiles
+tiles
 tiles
 desert amulet
 initiate sallet
@@ -4917,6 +4994,7 @@ black spear(p+)
 noted black spear(p+)
 black spear(p++)
 noted black spear(p++)
+woad leaf
 asgarnian ale(m)
 noted asgarnian ale(m)
 mature wmb
@@ -5229,6 +5307,7 @@ spirit roots
 noted spirit roots
 weeds
 noted weeds
+hay sack
 hay sack
 scarecrow
 noted stool
@@ -5924,6 +6003,8 @@ ancestral key
 ballad
 choc-ice
 noted choc-ice
+lamp
+watering can
 earth warrior champion scroll
 ghoul champion scroll
 giant champion scroll
@@ -5945,6 +6026,7 @@ noted fur
 noted wyvern bones
 slender blade
 bow-sword
+large pouch
 relic
 orb
 star bauble
@@ -7132,6 +7214,7 @@ excalibur
 darklight
 anti-dragon shield
 amulet of glory
+cape of legends
 king arthur
 elena
 giant dwarf
@@ -7686,6 +7769,10 @@ noted bone dagger (p++)
 dorgeshuun crossbow
 noted dorgeshuun crossbow
 bone bolts
+bone bolts
+bone bolts
+bone bolts
+bone bolts
 zanik (ham)
 zanik (showdown)
 cave horror
@@ -7767,6 +7854,8 @@ bridge section
 noted bridge section
 sweetgrubs
 noted sweetgrubs
+pieces of eight
+pieces of eight
 bucket
 torch
 the stuff
@@ -8975,6 +9064,7 @@ zamorak stole
 noted zamorak stole
 purple sweets
 scroll
+empty sack
 undead chicken
 selected iron
 bar magnet
@@ -9259,6 +9349,8 @@ noted goblin book
 dagon'hai history
 sin'keth's diary
 an empty folder
+an empty folder
+an empty folder
 used folder
 full folder
 rat's paper
@@ -9285,6 +9377,7 @@ windswept logs
 parchment
 brine sabre
 noted brine sabre
+key
 rotten barrel
 rope
 brine rat
@@ -10860,6 +10953,10 @@ western banner 1
 western banner 2
 western banner 3
 western banner 4
+antique lamp
+antique lamp
+antique lamp
+antique lamp
 holy book page set
 noted holy book page set
 unholy book page set
@@ -11707,6 +11804,8 @@ noted cabbage round shield
 gnomish firelighter
 noted gnomish firelighter
 puzzle box (master)
+puzzle box (master)
+puzzle box (master)
 light box
 clue geode (easy)
 clue geode (medium)
@@ -11824,6 +11923,7 @@ mounted coins
 cape hanger
 quest list
 tip jar
+spirit tree
 fairy ring
 spirit tree & fairy ring
 topiary bush
@@ -11848,19 +11948,6 @@ ring of suffering (ri)
 giant squirrel
 tangleroot
 rocky
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
-rift guardian
 rift guardian
 phoenix
 bruma root
@@ -12450,6 +12537,10 @@ drift net
 noted drift net
 pufferfish
 mermaid's tear
+mermaid's tear
+mermaid's tear
+mermaid's tear
+mermaid's tear
 fossil island note book
 scribbled note
 partial note
@@ -12649,7 +12740,6 @@ super antifire potion(2)
 noted super antifire potion(2)
 super antifire potion(1)
 noted super antifire potion(1)
-rift guardian
 vorki
 super antifire mix(2)
 noted super antifire mix(2)
@@ -13053,6 +13143,8 @@ dragon hasta(kp)
 fake dragon hasta(kp)
 ikkle hydra
 ikkle hydra
+ikkle hydra
+ikkle hydra
 wyrm bonemeal
 drake bonemeal
 hydra bonemeal
@@ -13087,7 +13179,13 @@ dragon knife
 dragon knife(p)
 dragon knife(p+)
 dragon knife(p++)
+dragon knife
 cormorant's glove
+cormorant's glove
+molch pearl
+molch pearl
+molch pearl
+molch pearl
 molch pearl
 bluegill
 noted bluegill
@@ -13164,6 +13262,7 @@ stone tablet
 seed pack
 bottomless compost bucket
 noted bottomless compost bucket
+bottomless compost bucket
 bottled dragonbreath (unpowered)
 noted bottled dragonbreath (unpowered)
 bottled dragonbreath
@@ -13195,12 +13294,15 @@ noted mystic boots (dusk)
 jar of chemicals
 noted jar of chemicals
 treasure scroll
+mysterious orb
 ancient casket
+antique lamp
 hydra slayer helmet
 hydra slayer helmet (i)
 alchemical hydra heads
 stuffed hydra heads
 alchemical hydra head
+antique lamp
 brimstone key
 brimstone key
 brimstone key
@@ -13229,6 +13331,7 @@ noted gilded dragonhide set
 clue nest (beginner)
 clue bottle (beginner)
 clue scroll (beginner)
+strange device
 mimic
 ring of 3rd age
 noted ring of 3rd age
@@ -14585,6 +14688,7 @@ lil' bloat
 lil' nylo
 lil' sot
 lil' xarp
+antique lamp
 antipoison (-)(1)
 antipoison (-)(2)
 antipoison (-)(3)
@@ -14678,6 +14782,12 @@ tzkal slayer helmet
 tzkal slayer helmet (i)
 dragon hunter crossbow (t)
 dragon hunter crossbow (b)
+antique lamp
+antique lamp
+antique lamp
+antique lamp
+antique lamp
+antique lamp
 ghommal's hilt 1
 ghommal's hilt 2
 ghommal's hilt 3
@@ -15161,6 +15271,10 @@ colossal pouch
 gold tiara
 noted gold tiara
 abyssal pearls
+abyssal pearls
+abyssal pearls
+abyssal pearls
+abyssal pearls
 catalytic talisman
 noted catalytic talisman
 catalytic tiara
@@ -15399,6 +15513,7 @@ water container
 mirror
 neutralising potion
 maisa's message
+antique lamp
 akila's journal
 het's capture
 apmeken's capture
@@ -16625,6 +16740,8 @@ valuables
 valuables
 valuables
 blessed bone statuette
+blessed bone statuette
+blessed bone statuette
 blessed bones
 blessed bat bones
 blessed big bones
@@ -17490,9 +17607,11 @@ branch
 potato sack
 emissary scroll
 canvas piece
+key
 arkan blade
 earthbound tecpatl
 noted earthbound tecpatl
+antique lamp
 keystone fragment
 kuhu essence
 ancient roots
@@ -17512,11 +17631,28 @@ damiana tea
 acatzin's axe
 acatzin's axe
 custodian stalker
+custodian stalker
+custodian stalker
 events tool
 atlatl dart tips
+atlatl dart tips
+atlatl dart tips
+atlatl dart tips
+atlatl dart tips
+atlatl dart shaft
+atlatl dart shaft
+atlatl dart shaft
+atlatl dart shaft
 atlatl dart shaft
 headless atlatl dart
+headless atlatl dart
+headless atlatl dart
+headless atlatl dart
+headless atlatl dart
 sacraments of ent folk
+ent seed
+ent seed
+ent seed
 ent seed
 greenman carving
 noted greenman carving
@@ -17540,6 +17676,9 @@ redwood hiking staff
 noted redwood hiking staff
 bow string spool
 vale offerings
+vale offerings
+vale offerings
+vale offerings
 letter
 alan's blessed bones
 on migration patterns
@@ -17557,6 +17696,10 @@ avernic treads (pr)(pe)
 avernic treads (pr)(et)
 avernic treads (pe)(et)
 avernic treads (max)
+mokhaiotl waystone
+mokhaiotl waystone
+mokhaiotl waystone
+mokhaiotl waystone
 mokhaiotl waystone
 confliction gauntlets
 noted confliction gauntlets
@@ -18872,6 +19015,7 @@ rusty coin
 broken sextant
 mouldy doll
 smashed mirror
+antique lamp
 aquanite tendon
 noted aquanite tendon
 aquanite hopper
