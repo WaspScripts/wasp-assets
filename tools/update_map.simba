@@ -1,12 +1,22 @@
 const
   MAP_FILES: TStringArray = ['map', 'collision', 'heightmap'];
-  UNZIP_FILES: Boolean = False;
-  DELETE_FILES: Boolean = True;
 
 var
   Path: String := PathNormalize({$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP);
+  UNZIP_FILES: Boolean = False;
+  DELETE_FILES: Boolean = True;
   Queue, Binned: TStringArray = [];
   Lock: TLock;
+
+procedure LoadArguments();
+begin
+  if GetProcessArg('path') then
+    Path := GetProcessArg('path');
+  if GetProcessArg('reset') then
+    UNZIP_FILES := GetProcessArg('reset').ToLower() = 'true';
+  if GetProcessArg('cleanup') then
+    DELETE_FILES := GetProcessArg('cleanup').ToLower() = 'true';
+end;
 
 procedure Compress(current: String);
 var
@@ -52,6 +62,8 @@ var
   timer: TCountDown;
 begin
   ClearSimbaOutput();
+
+  LoadArguments();
 
   Lock := TLock.Create();
 

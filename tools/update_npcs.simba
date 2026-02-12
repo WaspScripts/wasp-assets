@@ -1,17 +1,34 @@
 const
-  PATH             = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP + 'zips' + PATH_SEP;
-  JSONS_PATH       = PATH + 'npcs' + PATH_SEP;
-  DATA_URL         = 'https://raw.githubusercontent.com/mejrs/data_osrs/master/NPCList_OSRS.json';
-  HELPER_CACHE     = PATH + 'npcs_helper' + PATH_SEP;
-  RESET_CACHE      = False;
-  CLEAN_UP_HELPERS = True;
-  CLEAN_UP_NPCS    = True;
-  MAX_PLANE        = 3;
-  MAX_X            = 99;
-  MAX_Y            = 199;
-
+  MAX_Z: Integer = 3;
+  MAX_X: Integer = 99;
+  MAX_Y: Integer = 199;
 var
+  DATA_URL: String = 'https://raw.githubusercontent.com/mejrs/data_osrs/master/NPCList_OSRS.json';
+  PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP + 'zips' + PATH_SEP;
+  JSONS_PATH: String;
+  HELPER_CACHE: String;
+  RESET_CACHE: Boolean = False;
+  CLEAN_UP_HELPERS: Boolean = True;
+  CLEAN_UP_NPCS:Boolean = True;
   Unzipped: Boolean = False;
+
+procedure LoadArguments();
+begin
+  if GetProcessArg('path') then
+    PATH := GetProcessArg('path');
+  if GetProcessArg('url') then
+    DATA_URL := GetProcessArg('url');
+  if GetProcessArg('reset') then
+    RESET_CACHE := GetProcessArg('reset');
+  if GetProcessArg('cleanup') then
+    CLEAN_UP_HELPERS := GetProcessArg('cleanup');
+  if GetProcessArg('cleanup') then
+    CLEAN_UP_NPCS := GetProcessArg('cleanup');
+
+
+  JSONS_PATH := PATH + 'npcs' + PATH_SEP;
+  HELPER_CACHE := PATH + 'npcs_helper' + PATH_SEP;
+end;
 
 //This supports unzipping but simba unzipping is fucking slow...
 //set RESET_CACHE=False and use something else
@@ -107,6 +124,9 @@ var
   chunkContent: String;
 begin
   ClearSimbaOutput();
+
+  LoadArguments();
+
   DirDelete(JSONS_PATH, False);
   FileDelete(PATH + 'npcs.zip');
 
@@ -153,8 +173,8 @@ begin
     Sleep(1000);
   end;
 
-  SetLength(data, MAX_PLANE+1, MAX_X+1, MAX_Y+1);
-  SetLength(uniqueIDMap, MAX_PLANE+1, MAX_X+1, MAX_Y+1);
+  SetLength(data, MAX_Z+1, MAX_X+1, MAX_Y+1);
+  SetLength(uniqueIDMap, MAX_Z+1, MAX_X+1, MAX_Y+1);
 
   for joinedNPC in NPCsMap.Values do
     for i := 0 to High(joinedNPC.Planes) do
@@ -174,7 +194,7 @@ begin
         uniqueIDMap[p, chunk.X, chunk.Y] += joinedNPC.ID;
     end;
 
-  for p := 0 to MAX_PLANE do
+  for p := 0 to MAX_Z do
     for x := 0 to MAX_X do
       for y := 0 to MAX_Y do
       begin

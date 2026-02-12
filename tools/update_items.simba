@@ -1,7 +1,19 @@
 const
-  RESET = True;
-  PATH = {$MACRO DIR} + '..' + PATH_SEP + 'finders' + PATH_SEP + 'items' + PATH_SEP;
   SINGLE_ITEM: String = '';
+var
+  PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'finders' + PATH_SEP + 'items' + PATH_SEP;
+  RESET: Boolean = True;
+  CLEANUP: Boolean = True;
+
+procedure LoadArguments();
+begin
+  if GetProcessArg('path') then
+    PATH := GetProcessArg('path');
+  if GetProcessArg('reset') then
+    RESET := GetProcessArg('reset').ToLower() = 'true';
+  if GetProcessArg('cleanup') then
+    CLEANUP := GetProcessArg('cleanup').ToLower() = 'true';
+end;
 
 type
   TItemData = record
@@ -117,7 +129,7 @@ begin
   if not ZipFiles(PATH + 'items.zip', [PATH + 'items.bin']) then
     raise 'Couldn''t zip ' + PATH + 'items.bin';
 
-  if RESET then
+  if CLEANUP then
   begin
     DirDelete(PATH + 'items-imgs', False);
     DirDelete(PATH + 'masks', False);
@@ -128,6 +140,9 @@ var
   files: TStringArray;
   filename: String;
 begin
+  ClearSimbaOutput();
+  LoadArguments();
+
   PrepareResources(files);
 
   for filename in files do
