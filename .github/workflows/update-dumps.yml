@@ -67,8 +67,8 @@ jobs:
         if: steps.jar-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p staging
-          find runelite -name "cache-*-SNAPSHOT-shaded.jar" -exec cp {} staging/ \;
-          find runelite -name "client-*-SNAPSHOT-shaded.jar" -exec cp {} staging/ \;
+          find runelite -name "cache-*-SNAPSHOT-shaded.jar" -exec mv {} staging/ \;
+          find runelite -name "client-*-SNAPSHOT-shaded.jar" -exec mv {} staging/ \;
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
@@ -98,7 +98,6 @@ jobs:
           mkdir -p cache/input/${{ inputs.cache_version }}
           curl -L -o disk.zip https://archive.openrs2.org/caches/runescape/${{ inputs.cache_version }}/disk.zip
           unzip -qo disk.zip -d cache/input/${{ inputs.cache_version }}
-          rm disk.zip
 
       - name: Upload OpenRS2 Artifact
         uses: actions/upload-artifact@v4
@@ -175,11 +174,68 @@ jobs:
 
       - name: Run RuneLite
         run: |
-          $timeoutSeconds = 600
+          $timeoutSeconds = 150
           $jar = Get-ChildItem runelite-jars -Filter "client-*-SNAPSHOT-shaded.jar" | Select-Object -First 1
           if (-not $jar) { Write-Error "Shaded jar not found"; exit 1 }
-          Write-Host $jar.Name
 
+          # --- LOOP 1: CACHE WARMUP ---
+          Write-Host "Starting Loop 1 (Cache Warmup)..."
+          $process = Start-Process -FilePath "java" `
+              -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName `
+              -NoNewWindow -PassThru `
+              -RedirectStandardOutput "output.log" `
+              -RedirectStandardError "error.log"
+
+          $sw = [System.Diagnostics.Stopwatch]::StartNew()
+          $thrashingStarted = $false
+          $lastActivityTime = 0
+          $lastCombinedSize = 0
+
+          while (-not $process.HasExited) {
+              if ($sw.Elapsed.TotalSeconds -gt $timeoutSeconds) {
+                  Stop-Process -Id $process.Id -Force
+                  Write-Error "Loop 1 timed out"
+                  exit 1
+              }
+
+              # Calculate combined size of both logs to see if anything NEW was written
+              $currentSize = 0
+              if (Test-Path "output.log") { $currentSize += (Get-Item "output.log").Length }
+              if (Test-Path "error.log") { $currentSize += (Get-Item "error.log").Length }
+
+              # Only scan if the files have actually grown
+              if ($currentSize -gt $lastCombinedSize) {
+                  $outLines = if (Test-Path "output.log") { Get-Content "output.log" -Tail 20 } else { @() }
+                  $errLines = if (Test-Path "error.log") { Get-Content "error.log" -Tail 20 } else { @() }
+
+                  if (($outLines -match "cache.*thrashing") -or ($errLines -match "cache.*thrashing")) {
+                      if (-not $thrashingStarted) {
+                          Write-Host ">>> Thrashing detected! Starting silence timer..."
+                          $thrashingStarted = $true
+                      }
+                      $lastActivityTime = $sw.Elapsed.TotalSeconds
+                  }
+                  $lastCombinedSize = $currentSize
+              }
+
+              # If we saw thrashing, wait for 20s of no NEW thrashing logs
+              if ($thrashingStarted) {
+                  $silence = $sw.Elapsed.TotalSeconds - $lastActivityTime
+                  if ($silence -gt 20) {
+                      Write-Host ">>> Cache stable (20s since last thrash log). Killing process."
+                      Stop-Process -Id $process.Id -Force
+                      break
+                  }
+              }
+              Start-Sleep -Seconds 2
+          }
+
+          Write-Host "Warm Up Summary:"
+          Get-Content "output.log" -ErrorAction SilentlyContinue
+          Remove-Item "output.log", "error.log" -ErrorAction SilentlyContinue
+
+          # --- LOOP 2: ITEMFINDER DUMP ---
+          Write-Host "Starting Loop 2 (ItemFinder Dump)..."
           $process = Start-Process -FilePath "java" `
             -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName `
             -NoNewWindow -PassThru `
@@ -189,59 +245,24 @@ jobs:
           $sw = [System.Diagnostics.Stopwatch]::StartNew()
           while (-not $process.HasExited) {
             if ($sw.Elapsed.TotalSeconds -gt $timeoutSeconds) {
-              Write-Error "Startup timed out after 10 minutes"
-              Get-Content "output.log" -ErrorAction SilentlyContinue
-              Get-Content "error.log" -ErrorAction SilentlyContinue
               Stop-Process -Id $process.Id -Force
+              Write-Error "Loop 2 timed out"
               exit 1
             }
 
             if (Test-Path "output.log") {
-              $content = Get-Content "output.log" -Raw
-              if ($content -match "ItemFinder completed") {
+              if ((Get-Content "output.log" -Tail 20) -match "ItemFinder completed") {
+                Write-Host ">>> Success: ItemFinder completed!"
                 Start-Sleep -Seconds 10
-                Write-Host "Startup completed, stopping process"
                 Stop-Process -Id $process.Id -Force
                 break
               }
             }
-
             Start-Sleep -Seconds 2
           }
 
+          Write-Host "Final Log Summary:"
           Get-Content "output.log" -ErrorAction SilentlyContinue
-          Get-Content "error.log" -ErrorAction SilentlyContinue
-
-          $process = Start-Process -FilePath "java" `
-            -ArgumentList "-Dfile.encoding=UTF8 -jar", $jar.FullName `
-            -NoNewWindow -PassThru `
-            -RedirectStandardOutput "output.log" `
-            -RedirectStandardError "error.log"
-
-          $sw = [System.Diagnostics.Stopwatch]::StartNew()
-          while (-not $process.HasExited) {
-            if ($sw.Elapsed.TotalSeconds -gt $timeoutSeconds) {
-              Write-Error "ItemFinder timed out after 10 minutes"
-              Get-Content "output.log" -ErrorAction SilentlyContinue
-              Get-Content "error.log" -ErrorAction SilentlyContinue
-              Stop-Process -Id $process.Id -Force
-              exit 1
-            }
-
-            if (Test-Path "output.log") {
-              $content = Get-Content "output.log" -Raw
-              if ($content -match "ItemFinder completed") {
-                Write-Host "ItemFinder completed detected, stopping process"
-                Stop-Process -Id $process.Id -Force
-                break
-              }
-            }
-
-            Start-Sleep -Seconds 2
-          }
-
-          Get-Content "output.log" -ErrorAction SilentlyContinue
-          Get-Content "error.log" -ErrorAction SilentlyContinue
 
       - name: Upload ItemFinder
         uses: actions/upload-artifact@v6
