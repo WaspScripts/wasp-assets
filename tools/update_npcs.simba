@@ -19,11 +19,11 @@ begin
   if GetProcessArg('url') then
     DATA_URL := GetProcessArg('url');
   if GetProcessArg('reset') then
-    RESET_CACHE := GetProcessArg('reset');
+    RESET_CACHE := GetProcessArg('reset').ToLower() = 'true';
   if GetProcessArg('cleanup') then
-    CLEAN_UP_HELPERS := GetProcessArg('cleanup');
+    CLEAN_UP_HELPERS := GetProcessArg('cleanup').ToLower() = 'true';
   if GetProcessArg('cleanup') then
-    CLEAN_UP_NPCS := GetProcessArg('cleanup');
+    CLEAN_UP_NPCS := GetProcessArg('cleanup').ToLower() = 'true';
 
 
   JSONS_PATH := PATH + 'npcs' + PATH_SEP;
