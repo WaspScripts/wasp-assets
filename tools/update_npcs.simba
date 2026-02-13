@@ -21,10 +21,10 @@ begin
   if GetProcessArg('reset') then
     RESET_CACHE := GetProcessArg('reset').ToLower() = 'true';
   if GetProcessArg('cleanup') then
+  begin
     CLEAN_UP_HELPERS := GetProcessArg('cleanup').ToLower() = 'true';
-  if GetProcessArg('cleanup') then
     CLEAN_UP_NPCS := GetProcessArg('cleanup').ToLower() = 'true';
-
+  end;
 
   JSONS_PATH := PATH + 'npcs' + PATH_SEP;
   HELPER_CACHE := PATH + 'npcs_helper' + PATH_SEP;

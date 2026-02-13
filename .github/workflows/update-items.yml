@@ -56,7 +56,16 @@ jobs:
           echo "baseUrl=$baseUrl" >> $env:GITHUB_OUTPUT
           New-Item -Path ".\Includes" -ItemType Directory
 
+      - name: Check Simba cache
+        uses: actions/cache@v4
+        id: simba-cache
+        with:
+          path: ./Simba-Win64.exe
+          key: simba-cache-${{ steps.simba-url.outputs.baseUrl }}
+          enableCrossOsArchive: true
+
       - name: Download Simba 2.0 (64-bit)
+        if: steps.simba-cache.outputs.cache-hit != 'true'
         run: |
           $baseUrl = "${{ steps.simba-url.outputs.baseUrl }}"
           $downloadUrl = "$baseUrl" + "Win64.zip?raw=true"

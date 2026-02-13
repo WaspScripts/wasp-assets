@@ -117,7 +117,7 @@ jobs:
           echo "baseUrl=$BASE_URL" >> $GITHUB_OUTPUT
           mkdir -p ./Includes
 
-      - name: Restore/Simba cache
+      - name: Check Simba cache
         uses: actions/cache@v4
         id: simba-cache
         with:
@@ -745,10 +745,11 @@ jobs:
       - name: Generate new map files
         shell: bash
         run: |
+            mkdir ./zips
             #Simba does single thread unzipping and is slow
-            unzip -qo map.zip -d map
-            unzip -qo collision.zip -d collision
-            unzip -qo heightmap.zip -d heightmap
+            unzip -qo map.zip -d ./zips/map
+            unzip -qo collision.zip -d ./zips/collision
+            unzip -qo heightmap.zip -d ./zips/heightmap
             ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_map.simba
 
       - name: Upload item files
