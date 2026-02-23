@@ -24,7 +24,7 @@ jobs:
       - name: Get latest commit hash
         id: get-hash
         run: |
-          SHA=$(curl -sL https://api.github.com/repos/Torwent/runelite/commits/main | jq -r '.sha')
+          SHA=$(git ls-remote https://github.com/Torwent/runelite.git refs/heads/main | cut -f1)
           echo "sha=$SHA" >> $GITHUB_OUTPUT
 
       - name: Restore JARs Cache
