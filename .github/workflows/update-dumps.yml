@@ -4,13 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       cache_version:
-        description: 'OpenRS2 cache version to process'
+        description: "OpenRS2 cache version to process"
         required: true
         type: string
   workflow_call:
     inputs:
       cache_version:
-        description: 'OpenRS2 cache version to process'
+        description: "OpenRS2 cache version to process"
         required: true
         type: string
 
@@ -38,8 +38,8 @@ jobs:
         if: steps.jar-cache.outputs.cache-hit != 'true'
         uses: actions/checkout@v5
         with:
-          repository: 'Torwent/runelite'
-          ref: 'main'
+          repository: "Torwent/runelite"
+          ref: "main"
           path: ./runelite
 
       - name: Set up JDK 21
@@ -79,17 +79,12 @@ jobs:
   fetch-openrs2:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch latest OpenRS2 keys.json
-        run: |
-          mkdir -p cache/input/${{ inputs.cache_version }}
-          curl -L -o cache/input/${{ inputs.cache_version }}/${{ inputs.cache_version }}.json https://archive.openrs2.org/caches/runescape/${{ inputs.cache_version }}/keys.json
-
       - name: Restore/OpenRS2 cache
         uses: actions/cache@v4
         id: openrs2-cache
         with:
           path: cache/input/${{ inputs.cache_version }}
-          key: openrs2-cache-${{ inputs.cache_version }}-${{ hashFiles('**/*.json') }}
+          key: openrs2-cache-${{ inputs.cache_version }} }}
           enableCrossOsArchive: true
 
       - name: Download OpenRS2 (miss)
@@ -157,7 +152,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -277,7 +272,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -312,7 +307,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -346,7 +341,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -380,7 +375,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -414,7 +409,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -448,7 +443,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -482,7 +477,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -505,8 +500,8 @@ jobs:
 
       - name: Zip NPCs folder
         run: |
-            cd cache/output/${{ inputs.cache_version }}/NPCs
-            zip -r npcs-helper.zip .
+          cd cache/output/${{ inputs.cache_version }}/NPCs
+          zip -r npcs-helper.zip .
 
       - name: Upload NPCs
         uses: actions/upload-artifact@v6
@@ -521,7 +516,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -555,7 +550,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -589,7 +584,7 @@ jobs:
       - name: Setup Java 21
         uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
+          distribution: "temurin"
           java-version: 21
 
       - name: Download RuneLite artifacts
@@ -612,8 +607,8 @@ jobs:
 
       - name: Zip sprites folder
         run: |
-            cd cache/output/${{ inputs.cache_version }}/Sprites
-            zip -r sprites.zip .
+          cd cache/output/${{ inputs.cache_version }}/Sprites
+          zip -r sprites.zip .
 
       - name: Upload Sprites
         uses: actions/upload-artifact@v6
@@ -650,9 +645,9 @@ jobs:
       - name: Generate new items files
         shell: bash
         run: |
-            #Simba does single thread unzipping and is slow
-            unzip -qo items-imgs.zip -d items-imgs
-            ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_items.simba
+          #Simba does single thread unzipping and is slow
+          unzip -qo items-imgs.zip -d items-imgs
+          ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_items.simba
 
       - name: Move to staging
         run: |
@@ -695,9 +690,9 @@ jobs:
       - name: Generate new npc files
         shell: bash
         run: |
-            #Simba does single thread unzipping and is slow
-            unzip -qo npcs-helper.zip -d npcs_helper
-            ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_npcs.simba
+          #Simba does single thread unzipping and is slow
+          unzip -qo npcs-helper.zip -d npcs_helper
+          ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_npcs.simba
 
       - name: Upload NPCs
         uses: actions/upload-artifact@v6
@@ -745,12 +740,12 @@ jobs:
       - name: Generate new map files
         shell: bash
         run: |
-            mkdir ./zips
-            #Simba does single thread unzipping and is slow
-            unzip -qo map.zip -d ./zips/map
-            unzip -qo collision.zip -d ./zips/collision
-            unzip -qo heightmap.zip -d ./zips/heightmap
-            ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_map.simba
+          mkdir ./zips
+          #Simba does single thread unzipping and is slow
+          unzip -qo map.zip -d ./zips/map
+          unzip -qo collision.zip -d ./zips/collision
+          unzip -qo heightmap.zip -d ./zips/heightmap
+          ./Simba-Win64.exe --extractopenssl --path=./ --reset=false --cleanup=false --run ./wasp-assets/tools/update_map.simba
 
       - name: Upload item files
         uses: actions/upload-artifact@v6
@@ -758,16 +753,26 @@ jobs:
           name: processed-map
           path: mapdata.zip
 
-
   #Commit
   commit-results:
     runs-on: ubuntu-latest
-    needs: [
-      dump-items, dump-gear, dump-map-noicons, dump-object, dump-object1400, dump-sprites,
-      dump-collision, dump-height, dump-map, process-maps,
-      dump-npcs, process-npcs,
-      dump-itemfinder, process-items
-    ]
+    needs:
+      [
+        dump-items,
+        dump-gear,
+        dump-map-noicons,
+        dump-object,
+        dump-object1400,
+        dump-sprites,
+        dump-collision,
+        dump-height,
+        dump-map,
+        process-maps,
+        dump-npcs,
+        process-npcs,
+        dump-itemfinder,
+        process-items,
+      ]
     if: always()
     steps:
       - name: Checkout repository
