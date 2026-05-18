@@ -12,6 +12,7 @@ images/equipment.png
 images/gametab.png
 images/mm_fixed_mask.png
 images/mm_resizable_mask.png
+images/skills.zip
 jsons/consumables.json
 jsons/consumables.zip
 jsons/gear.json
