@@ -29,7 +29,7 @@ jobs:
 
       - name: Restore JARs Cache
         id: jar-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: staging/
           key: runelite-jars-${{ steps.get-hash.outputs.sha }}
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Restore/OpenRS2 cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: openrs2-cache
         with:
           path: cache/input/${{ inputs.cache_version }}
@@ -113,7 +113,7 @@ jobs:
           mkdir -p ./Includes
 
       - name: Check Simba cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: simba-cache
         with:
           path: ./Simba-Win64.exe

@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'finders/items/data/item.txt'
-      - 'finders/items/data/id.txt'
-      - 'finders/items/items-imgs.zip'
+      - "finders/items/data/item.txt"
+      - "finders/items/data/id.txt"
+      - "finders/items/items-imgs.zip"
   workflow_dispatch:
 
 jobs:
@@ -57,7 +57,7 @@ jobs:
           New-Item -Path ".\Includes" -ItemType Directory
 
       - name: Check Simba cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: simba-cache
         with:
           path: ./Simba-Win64.exe
@@ -104,6 +104,6 @@ jobs:
           fi
 
   call-workflow:
-      if: ${{ github.repository_owner == 'WaspScripts' }}
-      needs: process-items
-      uses: ./.github/workflows/hash-files.yml
+    if: ${{ github.repository_owner == 'WaspScripts' }}
+    needs: process-items
+    uses: ./.github/workflows/hash-files.yml

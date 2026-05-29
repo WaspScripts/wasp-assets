@@ -25,7 +25,7 @@ jobs:
           New-Item -Path ".\Includes" -ItemType Directory
 
       - name: Check Simba cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: simba-cache
         with:
           path: ./Simba-Win64.exe

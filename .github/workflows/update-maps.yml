@@ -5,9 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'map/zips/map.zip'
-      - 'map/zips/heightmap.zip'
-      - 'map/zips/collision.zip'
+      - "map/zips/map.zip"
+      - "map/zips/heightmap.zip"
+      - "map/zips/collision.zip"
   workflow_dispatch:
 
 jobs:
@@ -57,7 +57,7 @@ jobs:
           New-Item -Path ".\Includes" -ItemType Directory
 
       - name: Check Simba cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         id: simba-cache
         with:
           path: ./Simba-Win64.exe
@@ -84,10 +84,10 @@ jobs:
       - name: Unzip map files
         shell: bash
         run: |
-            unzip -o ./wasp-assets/map/zips/collision.zip -d ./wasp-assets/map/zips/collision
-            unzip -o ./wasp-assets/map/zips/heightmap.zip -d ./wasp-assets/map/zips/heightmap
-            unzip -o ./wasp-assets/map/zips/map.zip -d ./wasp-assets/map/zips/map
-            unzip -o ./wasp-assets/map/zips/npcs_helper.zip -d ./wasp-assets/map/zips/npcs_helper
+          unzip -o ./wasp-assets/map/zips/collision.zip -d ./wasp-assets/map/zips/collision
+          unzip -o ./wasp-assets/map/zips/heightmap.zip -d ./wasp-assets/map/zips/heightmap
+          unzip -o ./wasp-assets/map/zips/map.zip -d ./wasp-assets/map/zips/map
+          unzip -o ./wasp-assets/map/zips/npcs_helper.zip -d ./wasp-assets/map/zips/npcs_helper
 
       - name: Generate new npc files
         shell: bash
@@ -116,6 +116,6 @@ jobs:
           fi
 
   call-workflow:
-      if: ${{ github.repository_owner == 'WaspScripts' }}
-      needs: process-maps
-      uses: ./.github/workflows/hash-files.yml
+    if: ${{ github.repository_owner == 'WaspScripts' }}
+    needs: process-maps
+    uses: ./.github/workflows/hash-files.yml
