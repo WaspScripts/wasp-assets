@@ -13680,6 +13680,7 @@ noted super combat potion(2)
 super combat potion(1)
 noted super combat potion(1)
 noted barrows gloves
+noted berserker ring (i)
 noted dragon defender
 noted imbued guthix cape
 noted imbued zamorak cape
@@ -16656,7 +16657,7 @@ echo crystal
 noted echo crystal
 echo boots
 dizana's quiver (uncharged)
-dizana's quiver (uncharged) (l)
+dizana's quiver (l) (uncharged)
 dizana's quiver
 dizana's quiver (l)
 blessed dizana's quiver
@@ -19401,23 +19402,18 @@ demonic trident ornament kit
 noted demonic trident ornament kit
 trident of the swamp (o)
 uncharged toxic trident (o)
-noted uncharged toxic trident (o)
 trident of the swamp (e) (o)
-uncharged toxic trident (e)
-noted uncharged toxic trident (e)
+uncharged toxic trident (e) (o)
 trident of the seas (o)
 trident of the seas (full) (o)
-noted trident of the seas (full) (o)
 trident of the seas (e) (o)
 uncharged trident (e) (o)
-noted uncharged trident (e) (o)
-iban's staff
+iban's staff (o)
 iban's staff (u) (o)
 iban's staff (o)
 soulreaper axe (o)
-noted soulreaper axe (o)
-demonic slayer helmet
-demonic slayer helmet
+oathplate slayer helmet
+radiant slayer helmet
 demonic quill
 noted demonic quill
 demonic pacts dragon trophy
@@ -19427,8 +19423,8 @@ demonic pacts mithril trophy
 demonic pacts steel trophy
 demonic pacts iron trophy
 demonic pacts bronze trophy
-impish ritual kit
-noted impish ritual kit
+impish ritual scroll
+noted impish ritual scroll
 demonic pacts throne scroll
 noted demonic pacts throne scroll
 impish whistle
@@ -19458,6 +19454,51 @@ trinket of vengeance (2)
 noted trinket of vengeance (2)
 trinket of vengeance (1)
 noted trinket of vengeance (1)
+uncharged trident (o)
+oathplate slayer helmet (i)
+radiant slayer helmet (i)
+demonic pacts relic hunter (t1) armour set
+noted demonic pacts relic hunter (t1) armour set
+demonic pacts relic hunter (t2) armour set
+noted demonic pacts relic hunter (t2) armour set
+demonic pacts relic hunter (t3) armour set
+noted demonic pacts relic hunter (t3) armour set
+void melee helm (l) (broken)
+void melee helm (l) (mangled)
+void mage helm (l) (broken)
+void mage helm (l) (mangled)
+void ranger helm (l) (broken)
+void ranger helm (l) (mangled)
+void knight top (l) (broken)
+void knight top (l) (mangled)
+elite void top (l) (broken)
+elite void top (l) (mangled)
+void knight robe (l) (broken)
+void knight robe (l) (mangled)
+elite void robe (l) (broken)
+elite void robe (l) (mangled)
+void knight gloves (l) (broken)
+void knight gloves (l) (mangled)
+infernal max cape (l) (broken)
+infernal max cape (l) (mangled)
+infernal cape (l) (broken)
+infernal cape (l) (mangled)
+blood ancient sceptre (l) (broken)
+blood ancient sceptre (l) (mangled)
+ice ancient sceptre (l) (broken)
+ice ancient sceptre (l) (mangled)
+smoke ancient sceptre (l) (broken)
+smoke ancient sceptre (l) (mangled)
+shadow ancient sceptre (l) (broken)
+shadow ancient sceptre (l) (mangled)
+fighter torso (l) (broken)
+fighter torso (l) (mangled)
+dizana's quiver (l) (broken)
+dizana's quiver (l) (mangled)
+blessed dizana's quiver (l) (broken)
+blessed dizana's quiver (l) (mangled)
+dizana's max cape (l) (broken)
+dizana's max cape (l) (mangled)
 marrentill seed
 marrentill seed
 marrentill seed
