@@ -17161,7 +17161,7 @@ imcando hammer (off-hand)
 bruma torch (off-hand)
 coagulated venom
 spider cave teleport
-araxyte venom sack
+araxyte venom sac
 jar of venom
 araxyte head
 noxious point
@@ -19499,6 +19499,225 @@ blessed dizana's quiver (l) (broken)
 blessed dizana's quiver (l) (mangled)
 dizana's max cape (l) (broken)
 dizana's max cape (l) (mangled)
+etched araxyte fang
+noted etched araxyte fang
+garlic cocktail
+bucket of bloodwood sap
+seeking arrow shaft
+seeking arrow shaft
+seeking arrow shaft
+seeking arrow shaft
+seeking arrow shaft
+seeking headless arrow
+seeking headless arrow
+seeking headless arrow
+seeking headless arrow
+seeking headless arrow
+seeking bronze arrow
+seeking bronze arrow
+seeking bronze arrow
+seeking bronze arrow
+seeking bronze arrow
+seeking iron arrow
+seeking iron arrow
+seeking iron arrow
+seeking iron arrow
+seeking iron arrow
+seeking steel arrow
+seeking steel arrow
+seeking steel arrow
+seeking steel arrow
+seeking steel arrow
+seeking mithril arrow
+seeking mithril arrow
+seeking mithril arrow
+seeking mithril arrow
+seeking mithril arrow
+seeking adamant arrow
+seeking adamant arrow
+seeking adamant arrow
+seeking adamant arrow
+seeking adamant arrow
+seeking rune arrow
+seeking rune arrow
+seeking rune arrow
+seeking rune arrow
+seeking rune arrow
+seeking amethyst arrow
+seeking amethyst arrow
+seeking amethyst arrow
+seeking amethyst arrow
+seeking amethyst arrow
+seeking dragon arrow
+seeking dragon arrow
+seeking dragon arrow
+seeking dragon arrow
+seeking dragon arrow
+seeking broad arrows
+seeking broad arrows
+seeking broad arrows
+seeking broad arrows
+seeking broad arrows
+sap-treated logs
+sap-treated magic logs
+sap-treated yew logs
+sap-treated maple logs
+sap-treated willow logs
+sap-treated oak logs
+sap-treated redwood logs
+leechfin
+blood sac
+letvek
+dull ancient medal
+stymphike tartare
+rotten stymphike tartare
+supplies
+crimson kisten
+noted crimson kisten
+elder venator fang
+etched elder venator fang
+noted etched elder venator fang
+necklace of rupture
+noted necklace of rupture
+maggot marquess
+dummy stymphike feather
+noted dummy stymphike feather
+stymphike feather
+stymphike carcass
+makeshift spear
+orikalkum gravel
+grapevine
+venator fang
+venator tooth
+maggot egg
+maggot egg
+maggot egg
+maggot egg
+maggot egg
+maggot egg
+tarnished longsword
+tarnished spear
+tarnished 2h sword
+tarnished battleaxe
+tarnished halberd
+tarnished ring
+tarnished necklace
+tarnished necklace
+tarnished amulet
+venator heart
+dried out venator heart
+squire's journal
+from misthalin to morytania
+sarl's journal
+scruffy notebook
+pious proceedings
+the life of friar
+essiandar's notes
+ivandis' writings
+diamond sickle (b)
+enchanted diamond sickle (b)
+blisterwood sickle (e)
+tome of experience
+blisterwood stake
+hallowed flail
+ivan strom
+veliaf hurtz
+sunspear
+full moon key
+half moon key
+crescent moon key
+gibbous moon key
+new moon key
+gilded key
+solid key
+drakan emblem
+left crest half
+right crest half
+full crest
+ancient symbol
+ancient shield
+shield with symbol
+ornate knife
+ornate skull
+ornate hourglass
+explosive barrel
+small clock hand
+large clock hand
+poem scroll
+sink plug
+broken pipe
+sharp knife
+tongs
+syringe needle
+syringe barrel
+syringe plunger
+empty syringe
+full syringe
+venator stomach
+sword
+spear
+battleaxe
+mace
+lockbox
+ancestral dagger
+grid note
+mysterious book
+fancy gem
+fancy gem
+gilded book
+vampyre book
+cloudy grey potion
+weightless black potion
+thick red potion
+cold bluish-white potion
+lab notes
+chemical vial
+old cog
+jovkai key
+loop half of key
+tooth half of key
+myrmel key
+shadum key
+vitur key
+trapdoor key
+bolt cutters
+crank wheel
+dusty book
+spine
+dead blood serpent
+serpent rope
+tick
+tattered journal
+rotten diary
+amitire leaves
+amitire stew
+hallowed marks
+healing potion
+silvthrill ballista
+silvthrill javelin
+mysterious jerky
+putrid sticky potion (4)
+putrid sticky potion (3)
+putrid sticky potion (2)
+putrid sticky potion (1)
+foul chunky potion (4)
+foul chunky potion (3)
+foul chunky potion (2)
+foul chunky potion (1)
+rancid slimy potion (4)
+rancid slimy potion (3)
+rancid slimy potion (2)
+rancid slimy potion (1)
+rank frothy potion (4)
+rank frothy potion (3)
+rank frothy potion (2)
+rank frothy potion (1)
+jar of congealed blood
+smelly kebab
+raw impaler meat
+noted raw impaler meat
+stymphike
+venator
 marrentill seed
 marrentill seed
 marrentill seed
