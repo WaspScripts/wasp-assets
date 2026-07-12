@@ -83,7 +83,7 @@ jobs:
           fi
 
       - name: Commit hashes.json
-        if: steps.check-changes.outputs.changed == 'true'
+        if: steps.check-changes.outputs.changed == 'true' || steps.check-changes1400.outputs.changed == 'true'
         shell: bash
         run: |
           cd ./wasp-assets
