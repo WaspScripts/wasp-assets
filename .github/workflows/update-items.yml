@@ -12,7 +12,6 @@ on:
 
 jobs:
   check-items:
-    if: ${{ github.repository_owner == 'WaspScripts' }}
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.file_check.outputs.changed }}
@@ -42,7 +41,7 @@ jobs:
           fi
 
   process-items:
-    if: ${{ github.repository_owner == 'WaspScripts' && needs.check-items.outputs.changed == 'true' }}
+    if: ${{ needs.check-items.outputs.changed == 'true' }}
     needs: check-items
     runs-on: windows-latest
     steps:
@@ -104,6 +103,5 @@ jobs:
           fi
 
   call-workflow:
-    if: ${{ github.repository_owner == 'WaspScripts' }}
     needs: process-items
     uses: ./.github/workflows/hash-files.yml
