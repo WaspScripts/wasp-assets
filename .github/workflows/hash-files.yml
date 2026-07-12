@@ -9,7 +9,6 @@ on:
 
 jobs:
   hash-files:
-    if: ${{ github.repository_owner == 'WaspScripts' }}
     runs-on: windows-latest
     outputs:
       changes_detected: ${{ steps.check-changes.outputs.changed }}
