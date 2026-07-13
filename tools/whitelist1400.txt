@@ -26,4 +26,4 @@ map/zips/heightmap.zip
 map/zips/map.zip
 map/zips/objects1400.zip
 map/zips/npcs1400.zip
-map/custommaps.png
+map/custommaps.zip
