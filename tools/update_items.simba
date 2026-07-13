@@ -15,11 +15,30 @@ begin
     CLEANUP := GetProcessArg('cleanup').ToLower() = 'true';
 end;
 
+function TImage.GetHash(): String;
+var
+  pixels: TIntegerArray;
+  str: String;
+  h, i: Int32;
+begin
+  pixels := Self.GetColors();
+
+  h := $811C9DC5;
+  for i:=0 to High(pixels) do
+  begin
+    if pixels[i] = $0 then
+      Continue;
+    h := (h * $1000193) xor pixels[i];
+  end;
+
+  str := LowerCase(IntToHex(h, 16));
+  Result := str.CopyRange(Length(str)-8, Length(str));
+end;
+
 type
   TItemData = record
     ItemID: Int32;
-    BorderHash: String;
-    ItemHash: String;
+    BorderHash, ItemHash, ItemHash1400: String;
   end;
 
   TItemDataArray = array of TItemData;
@@ -41,6 +60,10 @@ begin
   if FileExists(PATH + 'data' + PATH_SEP + 'hash.txt') then
     if not FileDelete(PATH + 'data' + PATH_SEP + 'hash.txt') then
       raise 'Couldn''t delete ' + PATH + 'data' + PATH_SEP + 'hash.txt';
+
+  if FileExists(PATH + 'data' + PATH_SEP + '1400' + PATH_SEP + 'hash.txt') then
+    if not FileDelete(PATH + 'data' + PATH_SEP + '1400' + PATH_SEP + 'hash.txt') then
+      raise 'Couldn''t delete ' + PATH + 'data' + PATH_SEP + '1400' + PATH_SEP + 'hash.txt';
 
   files := DirList(PATH + 'items-imgs', True);
   if files = [] then
@@ -84,9 +107,19 @@ begin
   border.DrawColor := $FFFFFF;
   border.DrawTPA(tpa);
 
-  Result.ItemID     := PathExtractNameWithoutExt(filename).ExtractInteger();
-  Result.BorderHash := HashData(EHashAlgo.CRC32, border.Data, 4608); //h * w * 4 = 4608
-  Result.ItemHash   := HashData(EHashAlgo.CRC32, img.Data, 4608);
+  Result.ItemID       := PathExtractNameWithoutExt(filename).ExtractInteger();
+  Result.BorderHash   := HashData(EHashAlgo.CRC32, border.Data, 4608); //h * w * 4 = 4608
+  Result.ItemHash     := HashData(EHashAlgo.CRC32, img.Data, 4608);
+  Result.ItemHash1400 := img.GetHash();
+
+  if SINGLE_ITEM <> '' then
+  begin
+    WriteLn('Item:     ', Result.ItemID);
+    WriteLn('Border:   ', Result.BorderHash);
+    WriteLn('Hash:     ', Result.ItemHash);
+    WriteLn('Hash1400: ', Result.ItemHash1400);
+    img.Show();
+  end;
 
   ITEM_DATA_ARRAY += Result;
 
@@ -108,10 +141,17 @@ end;
 procedure WriteFiles();
 var
   itemData: TItemData;
+  hashes, hashes1400: String;
   writer: TResourceWriter;
 begin
   for itemData in ITEM_DATA_ARRAY do
-    FileAppend(PATH + 'data' + PATH_SEP + 'hash.txt', itemData.ItemHash + LINE_SEP);
+  begin
+    hashes += itemData.ItemHash + LINE_SEP;
+    hashes1400 += itemData.ItemHash1400 + LINE_SEP;
+  end;
+
+  FileWrite(PATH + 'data' + PATH_SEP + 'hash.txt', hashes);
+  FileWrite(PATH + 'data' +PATH_SEP + '1400' + PATH_SEP + 'hash.txt', hashes1400);
 
   if FileExists(PATH + 'items.bin') then
     if not FileDelete(PATH + 'items.bin') then
