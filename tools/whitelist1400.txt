@@ -3,7 +3,7 @@ finders/house_layout.zip
 finders/items/data/1400/hash.txt
 finders/items/data/id.txt
 finders/items/data/item.txt
-finders/items/items.zip
+finders/items/items-imgs.zip
 finders/overheads.zip
 finders/prayer.zip
 finders/spells.zip
