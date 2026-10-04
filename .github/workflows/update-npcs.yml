@@ -1,0 +1,73 @@
+name: Update NPC Spawns
+
+on:
+  schedule:
+    - cron: 0 12 * * 3
+  workflow_dispatch:
+
+jobs:
+  update-npcs:
+    runs-on: windows-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - name: Fetch Simba 2 download URL
+        id: simba-url
+        run: |
+          $url = "https://raw.githubusercontent.com/Villavu/Simba-Build-Archive/refs/heads/main/latest.win64"
+          $response = Invoke-WebRequest -Uri $url -UseBasicParsing
+          $baseUrl = $response.Content.Trim() -replace 'Win64\.zip\?raw=true$', ''
+          Write-Output "Base URL: $baseUrl"
+          echo "baseUrl=$baseUrl" >> $env:GITHUB_OUTPUT
+
+      - name: Check Simba cache
+        uses: actions/cache@v5
+        id: simba-cache
+        with:
+          path: ./Simba-Win64.exe
+          key: simba-cache-${{ steps.simba-url.outputs.baseUrl }}
+          enableCrossOsArchive: true
+
+      - name: Download Simba 2.0 (64-bit)
+        if: steps.simba-cache.outputs.cache-hit != 'true'
+        run: |
+          $baseUrl = "${{ steps.simba-url.outputs.baseUrl }}"
+          $downloadUrl = "$baseUrl" + "Win64.zip?raw=true"
+          Write-Output "Download URL (64-bit): $downloadUrl"
+          $outputFile = ".\download.zip"
+          Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile
+          Expand-Archive -Path $outputFile -DestinationPath . -Force
+          Remove-Item -Path $outputFile -Force
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          path: ./wasp-assets
+
+      - name: Generate npcspawns.txt
+        shell: bash
+        run: ./Simba-Win64.exe --extractopenssl --run ./wasp-assets/tools/update_npcs.simba
+
+      - name: Commit npcspawns.txt
+        id: commit
+        shell: bash
+        run: |
+          cd ./wasp-assets
+          if [[ -n "$(git status --porcelain map/npcspawns.txt)" ]]; then
+            git config --global user.name "Wasp Bot"
+            git config --global user.email "waspbot@waspscripts.com"
+            git add map/npcspawns.txt
+            git commit -m "Automatic NPC spawns update"
+            git push
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes to commit."
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+  # pushes made with the workflow token don't trigger other workflows, so hashing is called here
+  call-workflow:
+    needs: update-npcs
+    if: needs.update-npcs.outputs.changed == 'true'
+    uses: ./.github/workflows/hash-files.yml
+    secrets: inherit

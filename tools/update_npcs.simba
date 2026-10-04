@@ -1,0 +1,73 @@
+(*
+Turns the crowdsourced NPC spawn list into map/npcspawns.txt: one `id plane x y` line per spawn,
+x and y being tiles. Lines are sorted by plane, then by the 64x64 tile chunk they are in, so
+WaspLib can find a chunk's spawns as one run of lines.
+
+The list is scanned as text rather than parsed as JSON: it's a single 10MB array of flat objects,
+and only 4 fields of each are needed.
+*)
+var
+  URL: String = 'https://raw.githubusercontent.com/mejrs/data_osrs/master/NPCList_OSRS.json';
+  PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP + 'npcspawns.txt';
+
+//the number right after `key` in `entry`, or -1 when `entry` has no such key
+function Field(entry, key: String): Integer;
+var
+  i: Integer;
+begin
+  i := entry.IndexOf('"' + key + '":');
+  if i = 0 then
+    Exit(-1);
+
+  i += Length(key) + 3;
+  while entry[i] = ' ' do
+    Inc(i);
+
+  Result := 0;
+  while (i <= Length(entry)) and InRange(Ord(entry[i]), Ord('0'), Ord('9')) do
+  begin
+    Result := Result * 10 + Ord(entry[i]) - Ord('0');
+    Inc(i);
+  end;
+end;
+
+var
+  content, entry, line, previous: String;
+  lines, output: TStringArray;
+  id, plane, x, y: Integer;
+begin
+  ClearSimbaOutput();
+
+  content := HTTPClient.Get(URL);
+  if content = '' then
+    raise 'Couldn''t download ' + URL;
+
+  //every spawn is a flat object, so each one ends at the first closing brace
+  for entry in content.Split('}') do
+  begin
+    id := Field(entry, 'id');
+    plane := Field(entry, 'p');
+    x := Field(entry, 'x');
+    y := Field(entry, 'y');
+    if (id = -1) or (plane = -1) or (x = -1) or (y = -1) then
+      Continue;
+
+    //a fixed width sort key ahead of the line, so sorting the strings sorts the spawns
+    lines += Format('%.1d%.3d%.3d%.5d%.5d%.5d|', [plane, x div 64, y div 64, id, x, y]) +
+             ToStr(id) + ' ' + ToStr(plane) + ' ' + ToStr(x) + ' ' + ToStr(y);
+  end;
+
+  //the list has a few spawns twice
+  for line in lines.Sorted() do
+  begin
+    if line = previous then
+      Continue;
+    previous := line;
+    output += line.After('|');
+  end;
+
+  if not FileWrite(PATH, output.Join(LINE_SEP) + LINE_SEP) then
+    raise 'Couldn''t write ' + PATH;
+
+  WriteLn('Wrote ', Length(output), ' spawns to ', PATH);
+end.

@@ -1,0 +1,4 @@
+hashes.json
+jsons/consumables.zip
+jsons/weapons.json
+map/npcspawns.txt
