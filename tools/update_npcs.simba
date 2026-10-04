@@ -66,6 +66,10 @@ begin
     output += line.After('|');
   end;
 
+  //git drops empty directories, so map/ may not exist on a fresh checkout
+  if not DirExists(PathExtractDir(PATH)) then
+    DirCreate(PathExtractDir(PATH));
+
   if not FileWrite(PATH, output.Join(LINE_SEP) + LINE_SEP) then
     raise 'Couldn''t write ' + PATH;
 
