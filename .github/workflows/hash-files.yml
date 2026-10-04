@@ -57,7 +57,12 @@ jobs:
         id: check-changes
         shell: bash
         run: |
-          cp ./wasp-assets/hashes.json ./hashes-before.json
+          # a missing hashes.json (first run) compares as empty, so every asset counts as updated
+          if [[ -f ./wasp-assets/hashes.json ]]; then
+            cp ./wasp-assets/hashes.json ./hashes-before.json
+          else
+            echo '{}' > ./hashes-before.json
+          fi
           echo "Before: $(jq . ./hashes-before.json)"
           ./Simba-Win64.exe --extractopenssl --run ./wasp-assets/tools/hash-files.simba
           echo "After: $(jq . ./wasp-assets/hashes.json)"
