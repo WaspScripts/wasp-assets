@@ -1,4 +1,4 @@
 hashes.json
-jsons/consumables.zip
-jsons/weapons.json
-map/npcspawns.txt
+files/consumables.zip
+files/weapons.json
+files/npcspawns.txt

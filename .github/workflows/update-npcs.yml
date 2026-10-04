@@ -54,10 +54,10 @@ jobs:
         shell: bash
         run: |
           cd ./wasp-assets
-          if [[ -n "$(git status --porcelain map/npcspawns.txt)" ]]; then
+          if [[ -n "$(git status --porcelain files/npcspawns.txt)" ]]; then
             git config --global user.name "Wasp Bot"
             git config --global user.email "waspbot@waspscripts.com"
-            git add map/npcspawns.txt
+            git add files/npcspawns.txt
             git commit -m "Automatic NPC spawns update"
             git push
             echo "changed=true" >> $GITHUB_OUTPUT

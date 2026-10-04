@@ -1,5 +1,5 @@
 (*
-Turns the crowdsourced NPC spawn list into map/npcspawns.txt: one `id plane x y` line per spawn,
+Turns the crowdsourced NPC spawn list into files/npcspawns.txt: one `id plane x y` line per spawn,
 x and y being tiles. Lines are sorted by plane, then by the 64x64 tile chunk they are in, so
 WaspLib can find a chunk's spawns as one run of lines.
 
@@ -8,7 +8,7 @@ and only 4 fields of each are needed.
 *)
 var
   URL: String = 'https://raw.githubusercontent.com/mejrs/data_osrs/master/NPCList_OSRS.json';
-  PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'map' + PATH_SEP + 'npcspawns.txt';
+  PATH: String = {$MACRO DIR} + '..' + PATH_SEP + 'files' + PATH_SEP + 'npcspawns.txt';
 
 //the number right after `key` in `entry`, or -1 when `entry` has no such key
 function Field(entry, key: String): Integer;
@@ -66,7 +66,7 @@ begin
     output += line.After('|');
   end;
 
-  //git drops empty directories, so map/ may not exist on a fresh checkout
+  //git drops empty directories, so files/ may not exist on a fresh checkout
   if not DirExists(PathExtractDir(PATH)) then
     DirCreate(PathExtractDir(PATH));
 
