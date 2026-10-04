@@ -16,28 +16,29 @@ jobs:
         run: |
           $url = "https://raw.githubusercontent.com/Villavu/Simba-Build-Archive/refs/heads/main/latest.win64"
           $response = Invoke-WebRequest -Uri $url -UseBasicParsing
-          $baseUrl = $response.Content.Trim() -replace 'Win64\.zip\?raw=true$', ''
-          Write-Output "Base URL: $baseUrl"
-          echo "baseUrl=$baseUrl" >> $env:GITHUB_OUTPUT
+          $downloadUrl = $response.Content.Trim()
+          Write-Output "Download URL: $downloadUrl"
+          echo "url=$downloadUrl" >> $env:GITHUB_OUTPUT
 
       - name: Check Simba cache
         uses: actions/cache@v5
         id: simba-cache
         with:
           path: ./Simba-Win64.exe
-          key: simba-cache-${{ steps.simba-url.outputs.baseUrl }}
+          key: simba-cache-${{ steps.simba-url.outputs.url }}
           enableCrossOsArchive: true
 
       - name: Download Simba 2.0 (64-bit)
         if: steps.simba-cache.outputs.cache-hit != 'true'
         run: |
-          $baseUrl = "${{ steps.simba-url.outputs.baseUrl }}"
-          $downloadUrl = "$baseUrl" + "Win64.zip?raw=true"
-          Write-Output "Download URL (64-bit): $downloadUrl"
           $outputFile = ".\download.zip"
-          Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile
-          Expand-Archive -Path $outputFile -DestinationPath . -Force
+          Invoke-WebRequest -Uri "${{ steps.simba-url.outputs.url }}" -OutFile $outputFile
+          Expand-Archive -Path $outputFile -DestinationPath .\simba -Force
           Remove-Item -Path $outputFile -Force
+          # the exe name inside the zip changes between builds, normalize it
+          $exe = Get-ChildItem -Path .\simba -Filter *.exe -Recurse | Select-Object -First 1
+          if (-not $exe) { throw "No exe found in the Simba download" }
+          Move-Item -Path $exe.FullName -Destination .\Simba-Win64.exe -Force
 
       - name: Checkout repository
         uses: actions/checkout@v5
